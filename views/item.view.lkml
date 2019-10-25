@@ -1,5 +1,5 @@
 view: item {
-  sql_table_name: TPCDS_SF100TCL.ITEM ;;
+  sql_table_name: TPCDS_SF10TCL.ITEM ;;
   drill_fields: [i_item_id]
 
   dimension: i_item_id {

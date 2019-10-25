@@ -1,5 +1,5 @@
 view: catalog_sales {
-  sql_table_name: TPCDS_SF100TCL.CATALOG_SALES ;;
+  sql_table_name: TPCDS_SF10TCL.CATALOG_SALES ;;
 
   dimension: cs_bill_addr_sk {
     type: number

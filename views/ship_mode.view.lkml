@@ -1,5 +1,5 @@
 view: ship_mode {
-  sql_table_name: TPCDS_SF100TCL.SHIP_MODE ;;
+  sql_table_name: TPCDS_SF10TCL.SHIP_MODE ;;
   drill_fields: [sm_ship_mode_id]
 
   dimension: sm_ship_mode_id {

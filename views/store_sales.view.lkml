@@ -1,5 +1,5 @@
 view: store_sales {
-  sql_table_name: TPCDS_SF100TCL.STORE_SALES ;;
+  sql_table_name: TPCDS_SF10TCL.STORE_SALES ;;
 
   dimension: ss_addr_sk {
     type: number

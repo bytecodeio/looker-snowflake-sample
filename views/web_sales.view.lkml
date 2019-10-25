@@ -1,5 +1,5 @@
 view: web_sales {
-  sql_table_name: TPCDS_SF100TCL.WEB_SALES ;;
+  sql_table_name: TPCDS_SF10TCL.WEB_SALES ;;
 
   dimension: ws_bill_addr_sk {
     type: number

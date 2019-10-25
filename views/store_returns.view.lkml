@@ -1,5 +1,5 @@
 view: store_returns {
-  sql_table_name: TPCDS_SF100TCL.STORE_RETURNS ;;
+  sql_table_name: TPCDS_SF10TCL.STORE_RETURNS ;;
 
   dimension: sr_addr_sk {
     type: number

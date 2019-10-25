@@ -1,5 +1,5 @@
 view: catalog_page {
-  sql_table_name: TPCDS_SF100TCL.CATALOG_PAGE ;;
+  sql_table_name: TPCDS_SF10TCL.CATALOG_PAGE ;;
   drill_fields: [cp_catalog_page_id]
 
   dimension: cp_catalog_page_id {

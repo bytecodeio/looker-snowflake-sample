@@ -1,5 +1,5 @@
 view: catalog_returns {
-  sql_table_name: TPCDS_SF100TCL.CATALOG_RETURNS ;;
+  sql_table_name: TPCDS_SF10TCL.CATALOG_RETURNS ;;
 
   dimension: cr_call_center_sk {
     type: number

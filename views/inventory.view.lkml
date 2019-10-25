@@ -1,5 +1,5 @@
 view: inventory {
-  sql_table_name: TPCDS_SF100TCL.INVENTORY ;;
+  sql_table_name: TPCDS_SF10TCL.INVENTORY ;;
 
   dimension: inv_date_sk {
     type: number

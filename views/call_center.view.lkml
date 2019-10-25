@@ -1,5 +1,5 @@
 view: call_center {
-  sql_table_name: TPCDS_SF100TCL.CALL_CENTER ;;
+  sql_table_name: TPCDS_SF10TCL.CALL_CENTER ;;
   drill_fields: [cc_call_center_id]
 
   dimension: cc_call_center_id {

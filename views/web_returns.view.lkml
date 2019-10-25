@@ -1,5 +1,5 @@
 view: web_returns {
-  sql_table_name: TPCDS_SF100TCL.WEB_RETURNS ;;
+  sql_table_name: TPCDS_SF10TCL.WEB_RETURNS ;;
 
   dimension: wr_account_credit {
     type: number

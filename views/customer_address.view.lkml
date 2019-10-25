@@ -1,5 +1,5 @@
 view: customer_address {
-  sql_table_name: TPCDS_SF100TCL.CUSTOMER_ADDRESS ;;
+  sql_table_name: TPCDS_SF10TCL.CUSTOMER_ADDRESS ;;
 
   dimension: ca_address_id {
     type: string

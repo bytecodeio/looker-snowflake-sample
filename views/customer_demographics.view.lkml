@@ -1,5 +1,5 @@
 view: customer_demographics {
-  sql_table_name: TPCDS_SF100TCL.CUSTOMER_DEMOGRAPHICS ;;
+  sql_table_name: TPCDS_SF10TCL.CUSTOMER_DEMOGRAPHICS ;;
 
   dimension: cd_credit_rating {
     type: string

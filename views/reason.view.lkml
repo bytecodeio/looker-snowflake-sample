@@ -1,5 +1,5 @@
 view: reason {
-  sql_table_name: TPCDS_SF100TCL.REASON ;;
+  sql_table_name: TPCDS_SF10TCL.REASON ;;
   drill_fields: [r_reason_id]
 
   dimension: r_reason_id {

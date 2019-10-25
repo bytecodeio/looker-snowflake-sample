@@ -1,5 +1,5 @@
 view: household_demographics {
-  sql_table_name: TPCDS_SF100TCL.HOUSEHOLD_DEMOGRAPHICS ;;
+  sql_table_name: TPCDS_SF10TCL.HOUSEHOLD_DEMOGRAPHICS ;;
 
   dimension: hd_buy_potential {
     type: string
