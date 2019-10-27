@@ -1,58 +1,88 @@
 view: time_dim {
   sql_table_name: TPCDS_SF10TCL.TIME_DIM ;;
 
-  dimension: t_am_pm {
+  dimension: time_id {
+    group_label: "Keys/IDs"
+    label: "Time ID"
     type: string
-    sql: ${TABLE}."T_AM_PM" ;;
+    sql: ${TABLE}.T_TIME_ID ;;
   }
 
-  dimension: t_hour {
+  dimension: time_sk {
+    group_label: "Keys/IDs"
+    label: "Time SK"
     type: number
-    sql: ${TABLE}."T_HOUR" ;;
+    primary_key: yes
+    sql: ${TABLE}.T_TIME_SK ;;
   }
 
-  dimension: t_meal_time {
+  dimension: am_pm {
+    label: "AM / PM"
     type: string
-    sql: ${TABLE}."T_MEAL_TIME" ;;
+    sql: ${TABLE}.T_AM_PM ;;
   }
 
-  dimension: t_minute {
+  dimension: hour {
+    label: "Hour"
     type: number
-    sql: ${TABLE}."T_MINUTE" ;;
+    sql: ${TABLE}.T_HOUR ;;
   }
 
-  dimension: t_second {
-    type: number
-    sql: ${TABLE}."T_SECOND" ;;
-  }
-
-  dimension: t_shift {
+  dimension: meal_time {
+    label: "Meal Time"
     type: string
-    sql: ${TABLE}."T_SHIFT" ;;
+    sql: ${TABLE}.T_MEAL_TIME ;;
+    hidden: yes
   }
 
-  dimension: t_sub_shift {
-    type: string
-    sql: ${TABLE}."T_SUB_SHIFT" ;;
-  }
-
-  dimension: t_time {
+  dimension: minute {
+    label: "Minute"
     type: number
-    sql: ${TABLE}."T_TIME" ;;
+    sql: ${TABLE}.T_MINUTE ;;
+    hidden: yes
   }
 
-  dimension: t_time_id {
-    type: string
-    sql: ${TABLE}."T_TIME_ID" ;;
-  }
-
-  dimension: t_time_sk {
+  dimension: second {
+    label: "Second"
     type: number
-    sql: ${TABLE}."T_TIME_SK" ;;
+    sql: ${TABLE}.T_SECOND ;;
+    hidden: yes
+  }
+
+  dimension: shift {
+    label: "Shift"
+    type: string
+    sql: ${TABLE}.T_SHIFT ;;
+  }
+
+  dimension: sub_shift {
+    type: string
+    sql: ${TABLE}.T_SUB_SHIFT ;;
+  }
+
+  dimension: time_int {
+    label: "Time Integer"
+    type: number
+    sql: ${TABLE}.T_TIME ;;
+  }
+
+  dimension: time_str {
+    label: "Time String"
+    type: string
+    sql: lpad(${hour}, 2) || ':' || lpad(${minute}, 2) || ':' ||
+          lpad(${second}, 2)  ;;
   }
 
   measure: count {
+    label: "Number of Seconds"
     type: count
-    drill_fields: []
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      time_id,
+      time_str
+    ]
   }
 }

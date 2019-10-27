@@ -1,12 +1,12 @@
 view: dbgen_version {
   sql_table_name: TPCDS_SF10TCL.DBGEN_VERSION ;;
 
-  dimension: dv_cmdline_args {
+  dimension: cmdline_args {
     type: string
-    sql: ${TABLE}."DV_CMDLINE_ARGS" ;;
+    sql: ${TABLE}.DV_CMDLINE_ARGS ;;
   }
 
-  dimension_group: dv_create {
+  dimension_group: create {
     type: time
     timeframes: [
       raw,
@@ -18,17 +18,17 @@ view: dbgen_version {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}."DV_CREATE_DATE" ;;
+    sql: ${TABLE}.DV_CREATE_DATE ;;
   }
 
-  dimension: dv_create_time {
+  dimension: create_time {
     type: string
-    sql: ${TABLE}."DV_CREATE_TIME" ;;
+    sql: ${TABLE}.DV_CREATE_TIME ;;
   }
 
-  dimension: dv_version {
+  dimension: version {
     type: string
-    sql: ${TABLE}."DV_VERSION" ;;
+    sql: ${TABLE}.DV_VERSION ;;
   }
 
   measure: count {

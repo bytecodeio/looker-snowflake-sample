@@ -1,49 +1,64 @@
 view: customer_demographics {
   sql_table_name: TPCDS_SF10TCL.CUSTOMER_DEMOGRAPHICS ;;
 
-  dimension: cd_credit_rating {
+  dimension: demo_sk {
+    group_label: "Keys/IDs"
+    label: "Demographics SK"
+    type: number
+    primary_key: yes
+    sql: ${TABLE}.CD_DEMO_SK ;;
+  }
+
+  dimension: credit_rating {
+    label: "Credit Rating"
     type: string
-    sql: ${TABLE}."CD_CREDIT_RATING" ;;
+    sql: ${TABLE}.CD_CREDIT_RATING ;;
   }
 
-  dimension: cd_demo_sk {
+  dimension: dep_college_count {
+    group_label: "Numerical Dimensions"
+    label: "Dependents College Count"
     type: number
-    sql: ${TABLE}."CD_DEMO_SK" ;;
+    sql: ${TABLE}.CD_DEP_COLLEGE_COUNT ;;
   }
 
-  dimension: cd_dep_college_count {
+  dimension: dep_count {
+    group_label: "Numerical Dimensions"
+    label: "Dependents Count"
     type: number
-    sql: ${TABLE}."CD_DEP_COLLEGE_COUNT" ;;
+    sql: ${TABLE}.CD_DEP_COUNT ;;
   }
 
-  dimension: cd_dep_count {
+  dimension: dep_employed_count {
+    group_label: "Numerical Dimensions"
+    label: "Dependents Employed Count"
     type: number
-    sql: ${TABLE}."CD_DEP_COUNT" ;;
+    sql: ${TABLE}.CD_DEP_EMPLOYED_COUNT ;;
   }
 
-  dimension: cd_dep_employed_count {
-    type: number
-    sql: ${TABLE}."CD_DEP_EMPLOYED_COUNT" ;;
-  }
-
-  dimension: cd_education_status {
+  dimension: education_status {
+    label: "Education Status"
     type: string
-    sql: ${TABLE}."CD_EDUCATION_STATUS" ;;
+    sql: ${TABLE}.CD_EDUCATION_STATUS ;;
   }
 
-  dimension: cd_gender {
+  dimension: gender {
+    label: "Gender"
     type: string
-    sql: ${TABLE}."CD_GENDER" ;;
+    sql: ${TABLE}.CD_GENDER ;;
   }
 
-  dimension: cd_marital_status {
+  dimension: marital_status {
+    label: "Marital Status"
     type: string
-    sql: ${TABLE}."CD_MARITAL_STATUS" ;;
+    sql: ${TABLE}.CD_MARITAL_STATUS ;;
   }
 
-  dimension: cd_purchase_estimate {
+  dimension: purchase_estimate {
+    group_label: "Numerical Dimensions"
+    label: "Purchase Estimate"
     type: number
-    sql: ${TABLE}."CD_PURCHASE_ESTIMATE" ;;
+    sql: ${TABLE}.CD_PURCHASE_ESTIMATE ;;
   }
 
   measure: count {

@@ -1,179 +1,297 @@
 view: catalog_sales {
-  sql_table_name: TPCDS_SF10TCL.CATALOG_SALES ;;
+  drill_fields: [detail*]
+  derived_table: {
+    sql:  SELECT o.*,
+          dateadd(year, 16, sh.d_date) AS ship_date,
+          dateadd(year, 16, so.d_date) AS sold_date
 
-  dimension: cs_bill_addr_sk {
-    type: number
-    sql: ${TABLE}."CS_BILL_ADDR_SK" ;;
+          FROM tpcds_sf10tcl.catalog_sales o
+          LEFT JOIN tpcds_sf10tcl.date_dim sh
+            ON o.cs_ship_date_sk = sh.d_date_sk
+          LEFT JOIN tpcds_sf10tcl.date_dim so
+            ON o.cs_sold_date_sk = so.d_date_sk ;;
   }
 
-  dimension: cs_bill_cdemo_sk {
-    type: number
-    sql: ${TABLE}."CS_BILL_CDEMO_SK" ;;
+  dimension: catalog_sales_pk {
+    group_label: "Keys/IDs"
+    label: "Catalog Sales PK"
+    type: string
+    sql: ${order_number} || '-' || ${item_sk} ;;
+    hidden: yes
   }
 
-  dimension: cs_bill_customer_sk {
+  dimension: order_number {
+    group_label: "Keys/IDs"
+    label: "Order Number"
     type: number
-    sql: ${TABLE}."CS_BILL_CUSTOMER_SK" ;;
+    sql: ${TABLE}.CS_ORDER_NUMBER ;;
   }
 
-  dimension: cs_bill_hdemo_sk {
+  dimension: item_sk {
+    group_label: "Keys/IDs"
+    label: "Item SK"
     type: number
-    sql: ${TABLE}."CS_BILL_HDEMO_SK" ;;
+    sql: ${TABLE}.CS_ITEM_SK ;;
   }
 
-  dimension: cs_call_center_sk {
+  dimension: bill_addr_sk {
+    group_label: "Keys/IDs"
+    label: "Bill Address SK"
     type: number
-    sql: ${TABLE}."CS_CALL_CENTER_SK" ;;
+    sql: ${TABLE}.CS_BILL_ADDR_SK ;;
   }
 
-  dimension: cs_catalog_page_sk {
+  dimension: bill_cdemo_sk {
+    group_label: "Keys/IDs"
+    label: "Bill Customer Demographics SK"
     type: number
-    sql: ${TABLE}."CS_CATALOG_PAGE_SK" ;;
+    sql: ${TABLE}.CS_BILL_CDEMO_SK ;;
   }
 
-  dimension: cs_coupon_amt {
+  dimension: bill_customer_sk {
+    group_label: "Keys/IDs"
+    label: "Bill Customer SK"
     type: number
-    sql: ${TABLE}."CS_COUPON_AMT" ;;
+    sql: ${TABLE}.CS_BILL_CUSTOMER_SK ;;
   }
 
-  dimension: cs_ext_discount_amt {
+  dimension: bill_hdemo_sk {
+    group_label: "Keys/IDs"
+    label: "Bill Household Demographics SK"
     type: number
-    sql: ${TABLE}."CS_EXT_DISCOUNT_AMT" ;;
+    sql: ${TABLE}.CS_BILL_HDEMO_SK ;;
   }
 
-  dimension: cs_ext_list_price {
+  dimension: call_center_sk {
+    group_label: "Keys/IDs"
+    label: "Call Center SK"
     type: number
-    sql: ${TABLE}."CS_EXT_LIST_PRICE" ;;
+    sql: ${TABLE}.CS_CALL_CENTER_SK ;;
   }
 
-  dimension: cs_ext_sales_price {
+  dimension: catalog_page_sk {
+    group_label: "Keys/IDs"
+    label: "Catalog Page SK"
     type: number
-    sql: ${TABLE}."CS_EXT_SALES_PRICE" ;;
+    sql: ${TABLE}.CS_CATALOG_PAGE_SK ;;
   }
 
-  dimension: cs_ext_ship_cost {
+  dimension: coupon_amt {
+    group_label: "Numerical Dimensions"
+    label: "Coupon Amount"
     type: number
-    sql: ${TABLE}."CS_EXT_SHIP_COST" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_COUPON_AMT ;;
   }
 
-  dimension: cs_ext_tax {
+  dimension: ext_discount_amt {
+    group_label: "Numerical Dimensions"
+    label: "Ext Discount Amount"
     type: number
-    sql: ${TABLE}."CS_EXT_TAX" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_EXT_DISCOUNT_AMT ;;
   }
 
-  dimension: cs_ext_wholesale_cost {
+  dimension: ext_list_price {
+    group_label: "Numerical Dimensions"
+    label: "Ext List Price"
     type: number
-    sql: ${TABLE}."CS_EXT_WHOLESALE_COST" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_EXT_LIST_PRICE ;;
   }
 
-  dimension: cs_item_sk {
+  dimension: ext_sales_price {
+    group_label: "Numerical Dimensions"
+    label: "Ext Sales Price"
     type: number
-    sql: ${TABLE}."CS_ITEM_SK" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_EXT_SALES_PRICE ;;
   }
 
-  dimension: cs_list_price {
+  dimension: ext_ship_cost {
+    group_label: "Numerical Dimensions"
+    label: "Ext Ship Cost"
     type: number
-    sql: ${TABLE}."CS_LIST_PRICE" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_EXT_SHIP_COST ;;
   }
 
-  dimension: cs_net_paid {
+  dimension: ext_tax {
+    group_label: "Numerical Dimensions"
+    label: "Ext Tax"
     type: number
-    value_format_name: id
-    sql: ${TABLE}."CS_NET_PAID" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_EXT_TAX ;;
   }
 
-  dimension: cs_net_paid_inc_ship {
+  dimension: ext_wholesale_cost {
+    group_label: "Numerical Dimensions"
+    label: "Ext Wholesale Cost"
     type: number
-    sql: ${TABLE}."CS_NET_PAID_INC_SHIP" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_EXT_WHOLESALE_COST ;;
   }
 
-  dimension: cs_net_paid_inc_ship_tax {
+  dimension: list_price {
+    group_label: "Numerical Dimensions"
+    label: "List Price"
     type: number
-    sql: ${TABLE}."CS_NET_PAID_INC_SHIP_TAX" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_LIST_PRICE ;;
   }
 
-  dimension: cs_net_paid_inc_tax {
+  dimension: net_paid {
+    group_label: "Numerical Dimensions"
+    label: "Net Paid"
     type: number
-    sql: ${TABLE}."CS_NET_PAID_INC_TAX" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_NET_PAID ;;
   }
 
-  dimension: cs_net_profit {
+  dimension: net_paid_inc_ship {
+    group_label: "Numerical Dimensions"
+    label: "Net Paid Incl Shipping"
     type: number
-    sql: ${TABLE}."CS_NET_PROFIT" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_NET_PAID_INC_SHIP ;;
   }
 
-  dimension: cs_order_number {
+  dimension: net_paid_inc_ship_tax {
+    group_label: "Numerical Dimensions"
+    label: "Net Paid Incl Ship & Tax"
     type: number
-    sql: ${TABLE}."CS_ORDER_NUMBER" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_NET_PAID_INC_SHIP_TAX ;;
   }
 
-  dimension: cs_promo_sk {
+  dimension: net_paid_inc_tax {
+    group_label: "Numerical Dimensions"
+    label: "Net Paid Incl Tax"
     type: number
-    sql: ${TABLE}."CS_PROMO_SK" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_NET_PAID_INC_TAX ;;
   }
 
-  dimension: cs_quantity {
+  dimension: net_profit {
+    group_label: "Numerical Dimensions"
+    label: "Net Profit"
     type: number
-    sql: ${TABLE}."CS_QUANTITY" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_NET_PROFIT ;;
   }
 
-  dimension: cs_sales_price {
+  dimension: promo_sk {
+    group_label: "Keys/IDs"
+    label: "Promo SK"
     type: number
-    sql: ${TABLE}."CS_SALES_PRICE" ;;
+    sql: ${TABLE}.CS_PROMO_SK ;;
   }
 
-  dimension: cs_ship_addr_sk {
+  dimension: quantity {
+    group_label: "Numerical Dimensions"
+    label: "Quantity"
     type: number
-    sql: ${TABLE}."CS_SHIP_ADDR_SK" ;;
+    sql: ${TABLE}.CS_QUANTITY ;;
   }
 
-  dimension: cs_ship_cdemo_sk {
+  dimension: sales_price {
+    group_label: "Numerical Dimensions"
+    label: "Sales Price"
     type: number
-    sql: ${TABLE}."CS_SHIP_CDEMO_SK" ;;
+    value_format_name: usd
+    sql: ${TABLE}.CS_SALES_PRICE ;;
   }
 
-  dimension: cs_ship_customer_sk {
+  dimension: ship_addr_sk {
+    group_label: "Keys/IDs"
+    label: "Ship Address SK"
     type: number
-    sql: ${TABLE}."CS_SHIP_CUSTOMER_SK" ;;
+    sql: ${TABLE}.CS_SHIP_ADDR_SK ;;
   }
 
-  dimension: cs_ship_date_sk {
+  dimension: ship_cdemo_sk {
+    group_label: "Keys/IDs"
+    label: "Ship Customer Demographics SK"
     type: number
-    sql: ${TABLE}."CS_SHIP_DATE_SK" ;;
+    sql: ${TABLE}.CS_SHIP_CDEMO_SK ;;
   }
 
-  dimension: cs_ship_hdemo_sk {
+  dimension: ship_customer_sk {
+    group_label: "Keys/IDs"
+    label: "Ship Customer SK"
     type: number
-    sql: ${TABLE}."CS_SHIP_HDEMO_SK" ;;
+    sql: ${TABLE}.CS_SHIP_CUSTOMER_SK ;;
   }
 
-  dimension: cs_ship_mode_sk {
-    type: number
-    sql: ${TABLE}."CS_SHIP_MODE_SK" ;;
+  dimension_group: ship {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.ship_date ;;
   }
 
-  dimension: cs_sold_date_sk {
+  dimension: ship_hdemo_sk {
+    group_label: "Keys/IDs"
+    label: "Ship Household Demographics SK"
     type: number
-    sql: ${TABLE}."CS_SOLD_DATE_SK" ;;
+    sql: ${TABLE}.CS_SHIP_HDEMO_SK ;;
   }
 
-  dimension: cs_sold_time_sk {
+  dimension: ship_mode_sk {
+    group_label: "Keys/IDs"
+    label: "Ship Mode SK"
     type: number
-    sql: ${TABLE}."CS_SOLD_TIME_SK" ;;
+    sql: ${TABLE}.CS_SHIP_MODE_SK ;;
   }
 
-  dimension: cs_warehouse_sk {
-    type: number
-    sql: ${TABLE}."CS_WAREHOUSE_SK" ;;
+  dimension_group: sold {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.sold_date ;;
   }
 
-  dimension: cs_wholesale_cost {
+  dimension: warehouse_sk {
+    group_label: "Keys/IDs"
+    label: "Warehouse SK"
     type: number
-    sql: ${TABLE}."CS_WHOLESALE_COST" ;;
+    sql: ${TABLE}.CS_WAREHOUSE_SK ;;
+  }
+
+  dimension: wholesale_cost {
+    group_label: "Numerical Dimensions"
+    label: "Wholesale Cost"
+    type: number
+    value_format_name: usd
+    sql: ${TABLE}.CS_WHOLESALE_COST ;;
   }
 
   measure: count {
+    label: "Number of Sales"
     type: count
-    drill_fields: []
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      warehouse.warehouse_id,
+      warehouse.warehouse_name,
+    ]
   }
 }

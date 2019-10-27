@@ -1,114 +1,57 @@
 view: call_center {
-  sql_table_name: TPCDS_SF10TCL.CALL_CENTER ;;
-  drill_fields: [cc_call_center_id]
+  view_label: "Call Center"
+  drill_fields: [detail*]
+  derived_table: {
+    sql:
+          SELECT o.*,
+          dateadd(year, 16, od.d_date) AS open_date,
+          dateadd(year, 16, cd.d_date) AS closed_date
 
-  dimension: cc_call_center_id {
+          FROM tpcds_sf10tcl.call_center o
+          INNER JOIN (
+              SELECT
+                  MAX(cc_call_center_sk) AS max_sk,
+                  cc_call_center_id
+              FROM tpcds_sf10tcl.call_center
+              GROUP BY cc_call_center_id ) oo
+          ON o.cc_call_center_id = oo.cc_call_center_id
+          AND o.cc_call_center_sk = oo.max_sk
+
+          LEFT JOIN tpcds_sf10tcl.date_dim od
+            ON o.cc_open_date_sk = od.d_date_sk
+          LEFT JOIN tpcds_sf10tcl.date_dim cd
+            ON o.cc_closed_date_sk = cd.d_date_sk ;;
+  }
+
+  dimension: call_center_sk {
+    group_label: "Keys/IDs"
+    label: "Call Center SK"
+    type: number
     primary_key: yes
+    sql: ${TABLE}.CC_CALL_CENTER_SK ;;
+  }
+
+  dimension: call_center_id {
+    group_label: "Keys/IDs"
+    label: "Call Center ID"
     type: string
-    sql: ${TABLE}."CC_CALL_CENTER_ID" ;;
+    sql: ${TABLE}.CC_CALL_CENTER_ID ;;
   }
 
-  dimension: cc_call_center_sk {
-    type: number
-    sql: ${TABLE}."CC_CALL_CENTER_SK" ;;
-  }
-
-  dimension: cc_city {
+  dimension: city {
+    group_label: "Address"
+    label: "City"
     type: string
-    sql: ${TABLE}."CC_CITY" ;;
+    sql: ${TABLE}.CC_CITY ;;
   }
 
-  dimension: cc_class {
+  dimension: class {
+    label: "Class"
     type: string
-    sql: ${TABLE}."CC_CLASS" ;;
+    sql: ${TABLE}.CC_CLASS ;;
   }
 
-  dimension: cc_closed_date_sk {
-    type: number
-    sql: ${TABLE}."CC_CLOSED_DATE_SK" ;;
-  }
-
-  dimension: cc_company {
-    type: number
-    sql: ${TABLE}."CC_COMPANY" ;;
-  }
-
-  dimension: cc_company_name {
-    type: string
-    sql: ${TABLE}."CC_COMPANY_NAME" ;;
-  }
-
-  dimension: cc_country {
-    type: string
-    sql: ${TABLE}."CC_COUNTRY" ;;
-  }
-
-  dimension: cc_county {
-    type: string
-    sql: ${TABLE}."CC_COUNTY" ;;
-  }
-
-  dimension: cc_division {
-    type: number
-    sql: ${TABLE}."CC_DIVISION" ;;
-  }
-
-  dimension: cc_division_name {
-    type: string
-    sql: ${TABLE}."CC_DIVISION_NAME" ;;
-  }
-
-  dimension: cc_employees {
-    type: number
-    sql: ${TABLE}."CC_EMPLOYEES" ;;
-  }
-
-  dimension: cc_gmt_offset {
-    type: number
-    sql: ${TABLE}."CC_GMT_OFFSET" ;;
-  }
-
-  dimension: cc_hours {
-    type: string
-    sql: ${TABLE}."CC_HOURS" ;;
-  }
-
-  dimension: cc_manager {
-    type: string
-    sql: ${TABLE}."CC_MANAGER" ;;
-  }
-
-  dimension: cc_market_manager {
-    type: string
-    sql: ${TABLE}."CC_MARKET_MANAGER" ;;
-  }
-
-  dimension: cc_mkt_class {
-    type: string
-    sql: ${TABLE}."CC_MKT_CLASS" ;;
-  }
-
-  dimension: cc_mkt_desc {
-    type: string
-    sql: ${TABLE}."CC_MKT_DESC" ;;
-  }
-
-  dimension: cc_mkt_id {
-    type: number
-    sql: ${TABLE}."CC_MKT_ID" ;;
-  }
-
-  dimension: cc_name {
-    type: string
-    sql: ${TABLE}."CC_NAME" ;;
-  }
-
-  dimension: cc_open_date_sk {
-    type: number
-    sql: ${TABLE}."CC_OPEN_DATE_SK" ;;
-  }
-
-  dimension_group: cc_rec_end {
+  dimension_group: closed {
     type: time
     timeframes: [
       raw,
@@ -120,10 +63,106 @@ view: call_center {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}."CC_REC_END_DATE" ;;
+    sql: ${TABLE}.closed_date ;;
   }
 
-  dimension_group: cc_rec_start {
+  dimension: company {
+    group_label: "Keys/IDs"
+    label: "Company ID"
+    type: number
+    sql: ${TABLE}.CC_COMPANY ;;
+  }
+
+  dimension: company_name {
+    label: "Company Name"
+    type: string
+    sql: ${TABLE}.CC_COMPANY_NAME ;;
+  }
+
+  dimension: country {
+    group_label: "Address"
+    label: "Country"
+    type: string
+    sql: ${TABLE}.CC_COUNTRY ;;
+  }
+
+  dimension: county {
+    group_label: "Address"
+    label: "County"
+    type: string
+    map_layer_name: countries
+    sql: ${TABLE}.CC_COUNTY ;;
+  }
+
+  dimension: division {
+    group_label: "Keys/IDs"
+    label: "Division ID"
+    type: number
+    sql: ${TABLE}.CC_DIVISION ;;
+  }
+
+  dimension: division_name {
+    label: "Division Name"
+    type: string
+    sql: ${TABLE}.CC_DIVISION_NAME ;;
+  }
+
+  dimension: employees {
+    label: "Employees"
+    type: number
+    sql: ${TABLE}.CC_EMPLOYEES ;;
+  }
+
+  dimension: gmt_offset {
+    label: "GMT Offset"
+    type: number
+    sql: ${TABLE}.CC_GMT_OFFSET ;;
+  }
+
+  dimension: hours {
+    label: "Hours"
+    type: string
+    sql: ${TABLE}.CC_HOURS ;;
+  }
+
+  dimension: manager {
+    label: "Manager"
+    type: string
+    sql: ${TABLE}.CC_MANAGER ;;
+  }
+
+  dimension: market_manager {
+    label: "Market Manager"
+    type: string
+    sql: ${TABLE}.CC_MARKET_MANAGER ;;
+  }
+
+  dimension: mkt_class {
+    label: "Market Class"
+    type: string
+    sql: ${TABLE}.CC_MKT_CLASS ;;
+  }
+
+  dimension: mkt_desc {
+    label: "Market Description"
+    type: string
+    sql: ${TABLE}.CC_MKT_DESC ;;
+  }
+
+  dimension: mkt_id {
+    group_label: "Keys/IDs"
+    label: "Market ID"
+    type: number
+    sql: ${TABLE}.CC_MKT_ID ;;
+  }
+
+  dimension: name {
+    label: "Call Center Name"
+    type: string
+    sql: ${TABLE}.CC_NAME ;;
+  }
+
+  dimension_group: open {
     type: time
     timeframes: [
       raw,
@@ -135,51 +174,85 @@ view: call_center {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}."CC_REC_START_DATE" ;;
+    sql: ${TABLE}.open_date ;;
   }
 
-  dimension: cc_sq_ft {
+  dimension: sq_ft {
+    label: "Square Feet"
     type: number
-    sql: ${TABLE}."CC_SQ_FT" ;;
+    sql: ${TABLE}.CC_SQ_FT ;;
   }
 
-  dimension: cc_state {
+  dimension: state {
+    group_label: "Address"
+    label: "State"
     type: string
-    sql: ${TABLE}."CC_STATE" ;;
+    map_layer_name: us_states
+    sql: ${TABLE}.CC_STATE ;;
   }
 
-  dimension: cc_street_name {
+  dimension: street_address {
+    group_label: "Address"
+    label: "Stree Address"
     type: string
-    sql: ${TABLE}."CC_STREET_NAME" ;;
+    sql: TRIM(${street_number} || ' ' || ${street_name} || ' ' || ${street_type}
+          || ' ' || ${suite_number}) ;;
   }
 
-  dimension: cc_street_number {
+  dimension: street_name {
     type: string
-    sql: ${TABLE}."CC_STREET_NUMBER" ;;
+    sql: ${TABLE}.CC_STREET_NAME ;;
+    hidden: yes
   }
 
-  dimension: cc_street_type {
+  dimension: street_number {
     type: string
-    sql: ${TABLE}."CC_STREET_TYPE" ;;
+    sql: ${TABLE}.CC_STREET_NUMBER ;;
+    hidden: yes
   }
 
-  dimension: cc_suite_number {
+  dimension: street_type {
     type: string
-    sql: ${TABLE}."CC_SUITE_NUMBER" ;;
+    sql: ${TABLE}.CC_STREET_TYPE ;;
+    hidden: yes
   }
 
-  dimension: cc_tax_percentage {
+  dimension: suite_number {
+    type: string
+    sql: ${TABLE}.CC_SUITE_NUMBER ;;
+    hidden: yes
+  }
+
+  dimension: tax_percentage {
+    label: "Tax Percentage"
     type: number
-    sql: ${TABLE}."CC_TAX_PERCENTAGE" ;;
+    value_format_name: percent_1
+    sql: ${TABLE}.CC_TAX_PERCENTAGE ;;
   }
 
-  dimension: cc_zip {
+  dimension: zip {
+    group_label: "Address"
+    label: "Zip"
     type: string
-    sql: ${TABLE}."CC_ZIP" ;;
+    map_layer_name: us_zipcode_tabulation_areas
+    sql: ${TABLE}.CC_ZIP ;;
   }
 
   measure: count {
+    label: "Number of Call Centers"
     type: count
-    drill_fields: [cc_call_center_id, cc_division_name, cc_name, cc_street_name, cc_company_name]
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      call_center_id,
+      name,
+      company_name,
+      division_name,
+      city,
+      state,
+      country
+    ]
   }
 }

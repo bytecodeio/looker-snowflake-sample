@@ -1,55 +1,109 @@
 view: catalog_page {
-  sql_table_name: TPCDS_SF10TCL.CATALOG_PAGE ;;
-  drill_fields: [cp_catalog_page_id]
+  view_label: "Catalog Page"
+  drill_fields: [detail*]
+  derived_table: {
+    sql:
+        SELECT o.*,
+        dateadd(year, 16, ed.d_date) AS end_date,
+        dateadd(year, 16, sd.d_date) AS start_date
+        FROM tpcds_sf10tcl.catalog_page o
+        LEFT JOIN tpcds_sf10tcl.date_dim ed
+          ON o.cp_end_date_sk = ed.d_date_sk
+        LEFT JOIN tpcds_sf10tcl.date_dim sd
+          ON o.cp_start_date_sk = sd.d_date_sk ;;
+  }
 
-  dimension: cp_catalog_page_id {
+  dimension: catalog_page_sk {
+    group_label: "Keys/IDs"
+    label: "Catalog Page SK"
+    type: number
     primary_key: yes
+    sql: ${TABLE}.CP_CATALOG_PAGE_SK ;;
+  }
+
+  dimension: catalog_page_id {
+    group_label: "Keys/IDs"
+    label: "Catalog Page ID"
     type: string
-    sql: ${TABLE}."CP_CATALOG_PAGE_ID" ;;
+    sql: ${TABLE}.CP_CATALOG_PAGE_ID ;;
   }
 
-  dimension: cp_catalog_number {
+  dimension: catalog_number {
+    label: "Catalog Number"
     type: number
-    sql: ${TABLE}."CP_CATALOG_NUMBER" ;;
+    sql: ${TABLE}.CP_CATALOG_NUMBER ;;
   }
 
-  dimension: cp_catalog_page_number {
+  dimension: catalog_page_number {
+    label: "Catalog Page Number"
     type: number
-    sql: ${TABLE}."CP_CATALOG_PAGE_NUMBER" ;;
+    sql: ${TABLE}.CP_CATALOG_PAGE_NUMBER ;;
   }
 
-  dimension: cp_catalog_page_sk {
-    type: number
-    sql: ${TABLE}."CP_CATALOG_PAGE_SK" ;;
-  }
-
-  dimension: cp_department {
+  dimension: department {
+    label: "Department"
     type: string
-    sql: ${TABLE}."CP_DEPARTMENT" ;;
+    sql: ${TABLE}.CP_DEPARTMENT ;;
   }
 
-  dimension: cp_description {
+  dimension: description {
+    label: "Description"
     type: string
-    sql: ${TABLE}."CP_DESCRIPTION" ;;
+    sql: ${TABLE}.CP_DESCRIPTION ;;
   }
 
-  dimension: cp_end_date_sk {
-    type: number
-    sql: ${TABLE}."CP_END_DATE_SK" ;;
+  dimension_group: end {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.end_date ;;
   }
 
-  dimension: cp_start_date_sk {
-    type: number
-    sql: ${TABLE}."CP_START_DATE_SK" ;;
+  dimension_group: start {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.start_date ;;
   }
 
-  dimension: cp_type {
+  dimension: type {
+    label: "Type"
     type: string
-    sql: ${TABLE}."CP_TYPE" ;;
+    sql: ${TABLE}.CP_TYPE ;;
   }
 
   measure: count {
+    label: "Number of Catalog Pages"
     type: count
-    drill_fields: [cp_catalog_page_id]
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      catalog_page_id,
+      catalog_number,
+      catalog_page_number,
+      type,
+      department,
+      description,
+      start_date,
+      end_date
+    ]
   }
 }

@@ -1,94 +1,121 @@
 view: item {
+  label: "Item"
   sql_table_name: TPCDS_SF10TCL.ITEM ;;
-  drill_fields: [i_item_id]
+  drill_fields: [detail*]
 
-  dimension: i_item_id {
+  dimension: item_id {
+    group_label: "Keys/IDs"
+    label: "Item ID"
     primary_key: yes
     type: string
-    sql: ${TABLE}."I_ITEM_ID" ;;
+    sql: ${TABLE}.I_ITEM_ID ;;
   }
 
-  dimension: i_brand {
+  dimension: brand {
+    label: "Brand"
     type: string
-    sql: ${TABLE}."I_BRAND" ;;
+    sql: ${TABLE}.I_BRAND ;;
   }
 
-  dimension: i_brand_id {
+  dimension: brand_id {
+    group_label: "Keys/IDs"
+    label: "Brand ID"
     type: number
-    sql: ${TABLE}."I_BRAND_ID" ;;
+    sql: ${TABLE}.I_BRAND_ID ;;
   }
 
-  dimension: i_category {
+  dimension: category {
+    label: "Category"
     type: string
-    sql: ${TABLE}."I_CATEGORY" ;;
+    sql: ${TABLE}.I_CATEGORY ;;
   }
 
-  dimension: i_category_id {
+  dimension: category_id {
+    group_label: "Keys/IDs"
+    label: "Category ID"
     type: number
-    sql: ${TABLE}."I_CATEGORY_ID" ;;
+    sql: ${TABLE}.I_CATEGORY_ID ;;
   }
 
-  dimension: i_class {
+  dimension: class {
+    label: "Class"
     type: string
-    sql: ${TABLE}."I_CLASS" ;;
+    sql: ${TABLE}.I_CLASS ;;
   }
 
-  dimension: i_class_id {
+  dimension: class_id {
+    group_label: "Keys/IDs"
+    label: "Class ID"
     type: number
-    sql: ${TABLE}."I_CLASS_ID" ;;
+    sql: ${TABLE}.I_CLASS_ID ;;
   }
 
-  dimension: i_color {
+  dimension: color {
+    label: "Color"
     type: string
-    sql: ${TABLE}."I_COLOR" ;;
+    sql: ${TABLE}.I_COLOR ;;
   }
 
-  dimension: i_container {
+  dimension: container {
+    label: "Container"
     type: string
-    sql: ${TABLE}."I_CONTAINER" ;;
+    sql: ${TABLE}.I_CONTAINER ;;
   }
 
-  dimension: i_current_price {
+  dimension: current_price {
+    group_label: "Numerical Fields"
+    label: "Current Price"
     type: number
-    sql: ${TABLE}."I_CURRENT_PRICE" ;;
+    value_format_name: usd
+    sql: ${TABLE}.I_CURRENT_PRICE ;;
   }
 
-  dimension: i_formulation {
+  dimension: formulation {
+    label: "Formulation"
     type: string
-    sql: ${TABLE}."I_FORMULATION" ;;
+    sql: ${TABLE}.I_FORMULATION ;;
   }
 
-  dimension: i_item_desc {
+  dimension: item_desc {
+    label: "Item Description"
     type: string
-    sql: ${TABLE}."I_ITEM_DESC" ;;
+    sql: ${TABLE}.I_ITEM_DESC ;;
   }
 
-  dimension: i_item_sk {
+  dimension: item_sk {
+    group_label: "Keys/IDs"
+    label: "Item SK"
     type: number
-    sql: ${TABLE}."I_ITEM_SK" ;;
+    sql: ${TABLE}.I_ITEM_SK ;;
   }
 
-  dimension: i_manager_id {
+  dimension: manager_id {
+    group_label: "Keys/IDs"
+    label: "Manager ID"
     type: number
-    sql: ${TABLE}."I_MANAGER_ID" ;;
+    sql: ${TABLE}.I_MANAGER_ID ;;
   }
 
-  dimension: i_manufact {
+  dimension: manufact {
+    label: "Manufacturer"
     type: string
-    sql: ${TABLE}."I_MANUFACT" ;;
+    sql: ${TABLE}.I_MANUFACT ;;
   }
 
-  dimension: i_manufact_id {
+  dimension: manufact_id {
+    group_label: "Keys/IDs"
+    label: "Manufacturer ID"
     type: number
-    sql: ${TABLE}."I_MANUFACT_ID" ;;
+    sql: ${TABLE}.I_MANUFACT_ID ;;
   }
 
-  dimension: i_product_name {
+  dimension: product_name {
+    label: "Product Name"
     type: string
-    sql: ${TABLE}."I_PRODUCT_NAME" ;;
+    sql: ${TABLE}.I_PRODUCT_NAME ;;
   }
 
-  dimension_group: i_rec_end {
+  dimension_group: record_end {
     type: time
     timeframes: [
       raw,
@@ -100,10 +127,10 @@ view: item {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}."I_REC_END_DATE" ;;
+    sql: ${TABLE}.I_REC_END_DATE ;;
   }
 
-  dimension_group: i_rec_start {
+  dimension_group: record_start {
     type: time
     timeframes: [
       raw,
@@ -115,26 +142,47 @@ view: item {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}."I_REC_START_DATE" ;;
+    sql: ${TABLE}.I_REC_START_DATE ;;
   }
 
-  dimension: i_size {
+  dimension: size {
+    label: "Size"
     type: string
-    sql: ${TABLE}."I_SIZE" ;;
+    sql: ${TABLE}.I_SIZE ;;
   }
 
-  dimension: i_units {
+  dimension: units {
+    label: "Units"
     type: string
-    sql: ${TABLE}."I_UNITS" ;;
+    sql: ${TABLE}.I_UNITS ;;
   }
 
-  dimension: i_wholesale_cost {
+  dimension: wholesale_cost {
+    group_label: "Numberical Dimensions"
+    label: "Wholesale Cost"
     type: number
-    sql: ${TABLE}."I_WHOLESALE_COST" ;;
+    sql: ${TABLE}.I_WHOLESALE_COST ;;
   }
 
   measure: count {
+    label: "Number of Items"
     type: count
-    drill_fields: [i_item_id, i_product_name]
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      item_id,
+      item_sk,
+      product_name,
+      item_desc,
+      color,
+      size,
+      container,
+      class,
+      brand,
+      category,
+      manufact
+    ]
   }
 }

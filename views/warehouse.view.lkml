@@ -1,80 +1,124 @@
 view: warehouse {
   sql_table_name: TPCDS_SF10TCL.WAREHOUSE ;;
-  drill_fields: [w_warehouse_id]
+  drill_fields: [detail*]
 
-  dimension: w_warehouse_id {
+  dimension: warehouse_sk {
+    group_label: "Keys/IDs"
+    label: "Warehouse SK"
+    type: number
     primary_key: yes
-    type: string
-    sql: ${TABLE}."W_WAREHOUSE_ID" ;;
+    sql: ${TABLE}.W_WAREHOUSE_SK ;;
   }
 
-  dimension: w_city {
+  dimension: warehouse_id {
+    group_label: "Keys/IDs"
+    label: "Warehouse ID"
     type: string
-    sql: ${TABLE}."W_CITY" ;;
+    sql: ${TABLE}.W_WAREHOUSE_ID ;;
   }
 
-  dimension: w_country {
+  dimension: city {
+    group_label: "Address"
+    label: "City"
     type: string
-    sql: ${TABLE}."W_COUNTRY" ;;
+    sql: ${TABLE}.W_CITY ;;
   }
 
-  dimension: w_county {
+  dimension: country {
+    group_label: "Address"
+    label: "Country"
     type: string
-    sql: ${TABLE}."W_COUNTY" ;;
+    map_layer_name: countries
+    sql: ${TABLE}.W_COUNTRY ;;
   }
 
-  dimension: w_gmt_offset {
+  dimension: county {
+    group_label: "Address"
+    label: "County"
+    type: string
+    sql: ${TABLE}.W_COUNTY ;;
+  }
+
+  dimension: gmt_offset {
+    label: "GMT Offset"
     type: number
-    sql: ${TABLE}."W_GMT_OFFSET" ;;
+    sql: ${TABLE}.W_GMT_OFFSET ;;
   }
 
-  dimension: w_state {
+  dimension: state {
+    group_label: "Address"
+    label: "State"
     type: string
-    sql: ${TABLE}."W_STATE" ;;
+    map_layer_name: us_states
+    sql: ${TABLE}.W_STATE ;;
   }
 
-  dimension: w_street_name {
+  dimension: street_address {
+    group_label: "Address"
+    label: "Stree Address"
     type: string
-    sql: ${TABLE}."W_STREET_NAME" ;;
+    sql: TRIM(${street_number} || ' ' || ${street_name} || ' ' || ${street_type}
+      || ' ' || ${suite_number}) ;;
   }
 
-  dimension: w_street_number {
+  dimension: street_name {
     type: string
-    sql: ${TABLE}."W_STREET_NUMBER" ;;
+    sql: ${TABLE}.W_STREET_NAME ;;
+    hidden: yes
   }
 
-  dimension: w_street_type {
+  dimension: street_number {
     type: string
-    sql: ${TABLE}."W_STREET_TYPE" ;;
+    sql: ${TABLE}.W_STREET_NUMBER ;;
+    hidden: yes
   }
 
-  dimension: w_suite_number {
+  dimension: street_type {
     type: string
-    sql: ${TABLE}."W_SUITE_NUMBER" ;;
+    sql: ${TABLE}.W_STREET_TYPE ;;
+    hidden: yes
   }
 
-  dimension: w_warehouse_name {
+  dimension: suite_number {
     type: string
-    sql: ${TABLE}."W_WAREHOUSE_NAME" ;;
+    sql: ${TABLE}.W_SUITE_NUMBER ;;
+    hidden: yes
   }
 
-  dimension: w_warehouse_sk {
+  dimension: warehouse_name {
+    label: "Warehouse Name"
+    type: string
+    sql: ${TABLE}.W_WAREHOUSE_NAME ;;
+  }
+
+  dimension: warehouse_sq_ft {
+    label: "Warehouse Sq Ft"
     type: number
-    sql: ${TABLE}."W_WAREHOUSE_SK" ;;
+    sql: ${TABLE}.W_WAREHOUSE_SQ_FT ;;
   }
 
-  dimension: w_warehouse_sq_ft {
-    type: number
-    sql: ${TABLE}."W_WAREHOUSE_SQ_FT" ;;
-  }
-
-  dimension: w_zip {
+  dimension: zip {
+    group_label: "Address"
+    label: "Zip"
     type: string
-    sql: ${TABLE}."W_ZIP" ;;
+    map_layer_name: us_zipcode_tabulation_areas
+    sql: ${TABLE}.W_ZIP ;;
   }
 
   measure: count {
+    label: "Number of Warehouses"
     type: count
-    drill_fields: [w_warehouse_id, w_street_name, w_warehouse_name]
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      warehouse_id,
+      warehouse_name,
+      street_name,
+      city,
+      state,
+      country
+    ]
   }
 }

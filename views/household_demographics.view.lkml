@@ -1,33 +1,53 @@
 view: household_demographics {
   sql_table_name: TPCDS_SF10TCL.HOUSEHOLD_DEMOGRAPHICS ;;
+  drill_fields: [detail*]
 
-  dimension: hd_buy_potential {
+  dimension: demo_sk {
+    group_label: "Keys/IDs"
+    label: "Demo SK"
+    type: number
+    primary_key: yes
+    sql: ${TABLE}.HD_DEMO_SK ;;
+  }
+
+  dimension: buy_potential {
+    label: "Buy Potential"
     type: string
-    sql: ${TABLE}."HD_BUY_POTENTIAL" ;;
+    sql: ${TABLE}.HD_BUY_POTENTIAL ;;
   }
 
-  dimension: hd_demo_sk {
+  dimension: dep_count {
+    group_label: "Numerical Dimensions"
+    label: "Dependents Count"
     type: number
-    sql: ${TABLE}."HD_DEMO_SK" ;;
+    sql: ${TABLE}.HD_DEP_COUNT ;;
   }
 
-  dimension: hd_dep_count {
+  dimension: income_band_sk {
+    group_label: "Keys/IDs"
+    label: "Income Band SK"
     type: number
-    sql: ${TABLE}."HD_DEP_COUNT" ;;
+    sql: ${TABLE}.HD_INCOME_BAND_SK ;;
   }
 
-  dimension: hd_income_band_sk {
+  dimension: vehicle_count {
+    group_label: "Numerical Dimensions"
+    label: "Vehicle Count"
     type: number
-    sql: ${TABLE}."HD_INCOME_BAND_SK" ;;
-  }
-
-  dimension: hd_vehicle_count {
-    type: number
-    sql: ${TABLE}."HD_VEHICLE_COUNT" ;;
+    sql: ${TABLE}.HD_VEHICLE_COUNT ;;
   }
 
   measure: count {
     type: count
-    drill_fields: []
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      demo_sk,
+      buy_potential,
+      dep_count,
+      vehicle_count
+    ]
   }
 }
