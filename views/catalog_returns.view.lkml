@@ -12,6 +12,7 @@ view: catalog_returns {
     group_label: "Keys/IDs"
     label: "Catalog Returns PK"
     type: string
+    primary_key: yes
     sql: ${order_number} || '-' || ${item_sk} ;;
     hidden: yes
   }

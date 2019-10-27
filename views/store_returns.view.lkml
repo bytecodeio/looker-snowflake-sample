@@ -1,108 +1,179 @@
 view: store_returns {
-  sql_table_name: TPCDS_SF10TCL.STORE_RETURNS ;;
-
-  dimension: sr_addr_sk {
-    type: number
-    sql: ${TABLE}."SR_ADDR_SK" ;;
+  drill_fields: [detail*]
+  derived_table: {
+    sql:  SELECT o.*,
+          dateadd(year, 16, r.d_date) AS returned_date
+          FROM tpcds_sf10tcl.store_returns o
+          LEFT JOIN tpcds_sf10tcl.date_dim r
+            ON o.sr_returned_date_sk = r.d_date_sk ;;
   }
 
-  dimension: sr_cdemo_sk {
-    type: number
-    sql: ${TABLE}."SR_CDEMO_SK" ;;
+  dimension: store_returns_pk {
+    group_label: "Keys/IDs"
+    label: "Store Returns PK"
+    type: string
+    primary_key: yes
+    sql: ${ticket_number} || '-' || ${item_sk} ;;
+    hidden: yes
   }
 
-  dimension: sr_customer_sk {
+  dimension: ticket_number {
+    group_label: "Keys/IDs"
+    label: "Ticket Number"
     type: number
-    sql: ${TABLE}."SR_CUSTOMER_SK" ;;
+    sql: ${TABLE}.SR_TICKET_NUMBER ;;
   }
 
-  dimension: sr_fee {
+  dimension: item_sk {
+    group_label: "Keys/IDs"
+    label: "Item SK"
     type: number
-    sql: ${TABLE}."SR_FEE" ;;
+    sql: ${TABLE}.SR_ITEM_SK ;;
   }
 
-  dimension: sr_hdemo_sk {
+  dimension: addr_sk {
+    group_label: "Keys/IDs"
+    label: "Address SK"
     type: number
-    sql: ${TABLE}."SR_HDEMO_SK" ;;
+    sql: ${TABLE}.SR_ADDR_SK ;;
   }
 
-  dimension: sr_item_sk {
+  dimension: cdemo_sk {
+    group_label: "Keys/IDs"
+    label: "Customer Demographics SK"
     type: number
-    sql: ${TABLE}."SR_ITEM_SK" ;;
+    sql: ${TABLE}.SR_CDEMO_SK ;;
   }
 
-  dimension: sr_net_loss {
+  dimension: customer_sk {
+    group_label: "Keys/IDs"
+    label: "Customer SK"
     type: number
-    sql: ${TABLE}."SR_NET_LOSS" ;;
+    sql: ${TABLE}.SR_CUSTOMER_SK ;;
   }
 
-  dimension: sr_reason_sk {
+  dimension: fee {
+    group_label: "Numerical Dimensions"
+    label: "Fee"
     type: number
-    sql: ${TABLE}."SR_REASON_SK" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SR_FEE ;;
   }
 
-  dimension: sr_refunded_cash {
+  dimension: hdemo_sk {
+    group_label: "Keys/IDs"
+    label: "Household Demographics SK"
     type: number
-    sql: ${TABLE}."SR_REFUNDED_CASH" ;;
+    sql: ${TABLE}.SR_HDEMO_SK ;;
   }
 
-  dimension: sr_return_amt {
+  dimension: net_loss {
+    group_label: "Numerical Dimensions"
+    label: "Net Loss"
     type: number
-    sql: ${TABLE}."SR_RETURN_AMT" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SR_NET_LOSS ;;
   }
 
-  dimension: sr_return_amt_inc_tax {
+  dimension: reason_sk {
+    group_label: "Keys/IDs"
+    label: "Reason SK"
     type: number
-    sql: ${TABLE}."SR_RETURN_AMT_INC_TAX" ;;
+    sql: ${TABLE}.SR_REASON_SK ;;
   }
 
-  dimension: sr_return_quantity {
+  dimension: refunded_cash {
+    group_label: "Numerical Dimensions"
+    label: "Refunded Cash"
     type: number
-    sql: ${TABLE}."SR_RETURN_QUANTITY" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SR_REFUNDED_CASH ;;
   }
 
-  dimension: sr_return_ship_cost {
+  dimension: return_amt {
+    group_label: "Numerical Dimensions"
+    label: "Return Amount"
     type: number
-    sql: ${TABLE}."SR_RETURN_SHIP_COST" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SR_RETURN_AMT ;;
   }
 
-  dimension: sr_return_tax {
+  dimension: return_amt_inc_tax {
+    group_label: "Numerical Dimensions"
+    label: "Return Amount Incl Tax"
     type: number
-    sql: ${TABLE}."SR_RETURN_TAX" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SR_RETURN_AMT_INC_TAX ;;
   }
 
-  dimension: sr_return_time_sk {
+  dimension: return_quantity {
+    group_label: "Numerical Dimensions"
+    label: "Return Quantity"
     type: number
-    sql: ${TABLE}."SR_RETURN_TIME_SK" ;;
+    sql: ${TABLE}.SR_RETURN_QUANTITY ;;
   }
 
-  dimension: sr_returned_date_sk {
+  dimension: return_ship_cost {
+    group_label: "Numerical Dimensions"
+    label: "Return Ship Cost"
     type: number
-    sql: ${TABLE}."SR_RETURNED_DATE_SK" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SR_RETURN_SHIP_COST ;;
   }
 
-  dimension: sr_reversed_charge {
+  dimension: return_tax {
+    group_label: "Numerical Dimensions"
+    label: "Return Tax"
     type: number
-    sql: ${TABLE}."SR_REVERSED_CHARGE" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SR_RETURN_TAX ;;
   }
 
-  dimension: sr_store_credit {
-    type: number
-    sql: ${TABLE}."SR_STORE_CREDIT" ;;
+  dimension_group: returned {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.returned_date ;;
   }
 
-  dimension: sr_store_sk {
+  dimension: reversed_charge {
+    group_label: "Numerical Dimensions"
+    label: "Reversed Charge"
     type: number
-    sql: ${TABLE}."SR_STORE_SK" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SR_REVERSED_CHARGE ;;
   }
 
-  dimension: sr_ticket_number {
+  dimension: store_credit {
+    group_label: "Numerical Dimensions"
+    label: "Store Credit"
     type: number
-    sql: ${TABLE}."SR_TICKET_NUMBER" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SR_STORE_CREDIT ;;
+  }
+
+  dimension: store_sk {
+    group_label: "Keys/IDs"
+    label: "Store SK"
+    type: number
+    sql: ${TABLE}.SR_STORE_SK ;;
   }
 
   measure: count {
+    label: "Number of Store Returns"
     type: count
-    drill_fields: []
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: []
   }
 }

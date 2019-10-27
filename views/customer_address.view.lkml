@@ -1,18 +1,19 @@
 view: customer_address {
   sql_table_name: TPCDS_SF10TCL.CUSTOMER_ADDRESS ;;
 
+  dimension: address_sk {
+    group_label: "Keys/IDs"
+    label: "Address SK"
+    type: number
+    primary_key: yes
+    sql: ${TABLE}.CA_ADDRESS_SK ;;
+  }
+
   dimension: address_id {
     group_label: "Keys/IDs"
     label: "Address ID"
     type: string
     sql: ${TABLE}.CA_ADDRESS_ID ;;
-  }
-
-  dimension: address_sk {
-    group_label: "Keys/IDs"
-    label: "Address SK"
-    type: number
-    sql: ${TABLE}.CA_ADDRESS_SK ;;
   }
 
   dimension: city {

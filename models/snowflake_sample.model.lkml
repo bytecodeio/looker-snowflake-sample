@@ -206,22 +206,28 @@ explore: catalog_sales {
 }
 
 
-
-
-
 explore: customer_address {}
 
 explore: customer_demographics {}
 
 explore: date_dim {}
 
-explore: dbgen_version {}
-
 explore: household_demographics {}
 
 explore: income_band {}
 
-explore: inventory {}
+explore: inventory {
+  join: item {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${inventory.item_sk} = ${item.item_sk} ;;
+  }
+  join: warehouse {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${inventory.warehouse_sk} = ${warehouse.warehouse_sk} ;;
+  }
+}
 
 explore: item {}
 
@@ -237,18 +243,92 @@ explore: reason {}
 
 explore: ship_mode {}
 
-explore: store {
-  join: closed_date {
-    from: date_dim
+explore: store {}
+
+explore: store_returns {
+  view_name: store_returns
+  join: store {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${store.closed_date_sk} = ${closed_date.date_sk} ;;
+    sql_on: ${store_returns.store_sk} = ${store.store_sk} ;;
+  }
+  join: item {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_returns.item_sk} = ${item.item_sk} ;;
+  }
+  join: reason {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_returns.reason_sk} = ${reason.reason_sk};;
+  }
+  join: address {
+    from: customer_address
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_returns.addr_sk} = ${address.address_sk} ;;
+  }
+  join: customer {
+    from: customer
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_returns.customer_sk} = ${customer.customer_sk} ;;
+  }
+  join: cust_demo {
+    from: customer_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_returns.cdemo_sk} = ${cust_demo.demo_sk} ;;
+  }
+  join: hh_demo {
+    from: household_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_returns.hdemo_sk} = ${hh_demo.demo_sk} ;;
   }
 }
 
-explore: store_returns {}
-
-explore: store_sales {}
+explore: store_sales {
+  join: item {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_sales.item_sk} = ${item.item_sk} ;;
+  }
+  join: address {
+    from: customer_address
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_sales.addr_sk} = ${address.address_sk} ;;
+  }
+  join: customer {
+    from: customer
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_sales.customer_sk} = ${customer.customer_sk} ;;
+  }
+  join: cust_demo {
+    from: customer_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_sales.cdemo_sk} = ${cust_demo.demo_sk} ;;
+  }
+  join: hh_demo {
+    from: household_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_sales.hdemo_sk} = ${hh_demo.demo_sk} ;;
+  }
+  join: store {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_sales.store_sk} = ${store.store_sk} ;;
+  }
+  join: promotion {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${store_sales.promo_sk} = ${promotion.promo_sk};;
+  }
+}
 
 explore: time_dim {}
 
@@ -263,8 +343,152 @@ explore: web_page {
   }
 }
 
-explore: web_returns {}
+explore: web_returns {
+  view_name: web_returns
+  join: web_page {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.web_page_sk} = ${web_page.web_page_sk} ;;
+  }
+  join: item {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.item_sk} = ${item.item_sk} ;;
+  }
+  join: reason {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.reason_sk} = ${reason.reason_sk};;
+  }
+  join: refunded_address {
+    from: customer_address
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.refunded_addr_sk} = ${refunded_address.address_sk} ;;
+  }
+  join: refunded_customer {
+    from: customer
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.refunded_customer_sk} = ${refunded_customer.customer_sk} ;;
+  }
+  join: refunded_cust_demo {
+    from: customer_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.refunded_cdemo_sk} = ${refunded_cust_demo.demo_sk} ;;
+  }
+  join: refunded_hh_demo {
+    from: household_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.refunded_hdemo_sk} = ${refunded_hh_demo.demo_sk} ;;
+  }
+  join: returning_address {
+    from: customer_address
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.returning_addr_sk} = ${returning_address.address_sk} ;;
+  }
+  join: returning_customer {
+    from: customer
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.returning_customer_sk} = ${returning_customer.customer_sk} ;;
+  }
+  join: returning_cust_demo {
+    from: customer_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.returning_cdemo_sk} = ${returning_cust_demo.demo_sk} ;;
+  }
+  join: returning_hh_demo {
+    from: household_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_returns.returning_hdemo_sk} = ${returning_hh_demo.demo_sk} ;;
+  }
+}
 
-explore: web_sales {}
+explore: web_sales {
+  join: item {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.item_sk} = ${item.item_sk} ;;
+  }
+  join: bill_address {
+    from: customer_address
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.bill_addr_sk} = ${bill_address.address_sk} ;;
+  }
+  join: bill_customer {
+    from: customer
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.bill_customer_sk} = ${bill_customer.customer_sk} ;;
+  }
+  join: bill_cust_demo {
+    from: customer_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.bill_cdemo_sk} = ${bill_cust_demo.demo_sk} ;;
+  }
+  join: bill_hh_demo {
+    from: household_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.bill_hdemo_sk} = ${bill_hh_demo.demo_sk} ;;
+  }
+  join: web_site {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.web_site_sk} = ${web_sales.web_site_sk} ;;
+  }
+  join: web_page {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.web_page_sk} = ${web_page.web_page_sk} ;;
+  }
+  join: promotion {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.promo_sk} = ${promotion.promo_sk};;
+  }
+  join: ship_address {
+    from: customer_address
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.ship_addr_sk} = ${ship_address.address_sk} ;;
+  }
+  join: ship_customer {
+    from: customer
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.ship_customer_sk} = ${ship_customer.customer_sk} ;;
+  }
+  join: ship_cust_demo {
+    from: customer_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.ship_cdemo_sk} = ${ship_cust_demo.demo_sk} ;;
+  }
+  join: ship_hh_demo {
+    from: household_demographics
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.ship_hdemo_sk} = ${ship_hh_demo.demo_sk} ;;
+  }
+  join: ship_mode {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.ship_mode_sk} = ${ship_mode.ship_mode_sk} ;;
+  }
+  join: warehouse {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_sales.warehouse_sk} = ${warehouse.warehouse_sk} ;;
+  }
+}
 
-explore: website {}
+explore: web_site {}

@@ -16,6 +16,7 @@ view: catalog_sales {
     group_label: "Keys/IDs"
     label: "Catalog Sales PK"
     type: string
+    primary_key: yes
     sql: ${order_number} || '-' || ${item_sk} ;;
     hidden: yes
   }

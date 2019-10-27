@@ -1,6 +1,22 @@
 view: store {
-  sql_table_name: TPCDS_SF10TCL.STORE ;;
   drill_fields: [detail*]
+  derived_table: {
+    sql:  SELECT o.*,
+          dateadd(year, 16, cd.d_date) AS closed_date
+
+          FROM tpcds_sf10tcl.store o
+          INNER JOIN (
+              SELECT
+                  MAX(s_store_sk) AS max_sk,
+                  S_store_id
+              FROM tpcds_sf10tcl.store
+              GROUP BY s_store_id ) oo
+          ON o.s_store_id = oo.s_store_id
+          AND o.s_store_sk = oo.max_sk
+
+          LEFT JOIN tpcds_sf10tcl.date_dim cd
+            ON o.s_closed_date_sk = cd.d_date_sk  ;;
+  }
 
   dimension: store_sk {
     group_label: "Keys/IDs"
@@ -24,13 +40,6 @@ view: store {
     sql: ${TABLE}.S_CITY ;;
   }
 
-  dimension: closed_date_sk {
-    group_label: "Keys/IDs"
-    label: "Closed Date SK"
-    type: number
-    sql: ${TABLE}.S_CLOSED_DATE_SK ;;
-  }
-
   dimension_group: closed {
     type: time
     timeframes: [
@@ -43,7 +52,7 @@ view: store {
     ]
     convert_tz: no
     datatype: date
-    sql: ${closed_date.calendar_raw} ;;
+    sql: ${TABLE}.closed_date ;;
   }
 
   dimension: company_id {
@@ -141,36 +150,6 @@ view: store {
     label: "Number of Employees"
     type: number
     sql: ${TABLE}.S_NUMBER_EMPLOYEES ;;
-  }
-
-  dimension_group: record_end {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.S_REC_END_DATE ;;
-  }
-
-  dimension_group: record_start {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.S_REC_START_DATE ;;
   }
 
   dimension: state {

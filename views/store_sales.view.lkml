@@ -1,124 +1,203 @@
 view: store_sales {
-  sql_table_name: TPCDS_SF10TCL.STORE_SALES ;;
-
-  dimension: ss_addr_sk {
-    type: number
-    sql: ${TABLE}."SS_ADDR_SK" ;;
+  drill_fields: [detail*]
+  derived_table: {
+    sql:  SELECT o.*,
+          dateadd(year, 16, s.d_date) AS sold_date
+          FROM tpcds_sf10tcl.store_sales o
+          LEFT JOIN tpcds_sf10tcl.date_dim s
+            ON o.ss_sold_date_sk = s.d_date_sk ;;
   }
 
-  dimension: ss_cdemo_sk {
-    type: number
-    sql: ${TABLE}."SS_CDEMO_SK" ;;
+  dimension: store_sales_pk {
+    group_label: "Keys/IDs"
+    label: "Store Sales PK"
+    type: string
+    primary_key: yes
+    sql: ${ticket_number} || '-' || ${item_sk} ;;
+    hidden: yes
   }
 
-  dimension: ss_coupon_amt {
+  dimension: ticket_number {
+    group_label: "Keys/IDs"
+    label: "Ticket Number"
     type: number
-    sql: ${TABLE}."SS_COUPON_AMT" ;;
+    sql: ${TABLE}.SR_TICKET_NUMBER ;;
   }
 
-  dimension: ss_customer_sk {
+  dimension: item_sk {
+    group_label: "Keys/IDs"
+    label: "Item SK"
     type: number
-    sql: ${TABLE}."SS_CUSTOMER_SK" ;;
+    sql: ${TABLE}.SR_ITEM_SK ;;
   }
 
-  dimension: ss_ext_discount_amt {
+  dimension: addr_sk {
+    group_label: "Keys/IDs"
+    label: "Address SK"
     type: number
-    sql: ${TABLE}."SS_EXT_DISCOUNT_AMT" ;;
+    sql: ${TABLE}.SS_ADDR_SK ;;
   }
 
-  dimension: ss_ext_list_price {
+  dimension: cdemo_sk {
+    group_label: "Keys/IDs"
+    label: "Customer Demographics SK"
     type: number
-    sql: ${TABLE}."SS_EXT_LIST_PRICE" ;;
+    sql: ${TABLE}.SS_CDEMO_SK ;;
   }
 
-  dimension: ss_ext_sales_price {
+  dimension: coupon_amt {
+    group_label: "Numerical Dimensions"
+    label: "Coupon Amount"
     type: number
-    sql: ${TABLE}."SS_EXT_SALES_PRICE" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_COUPON_AMT ;;
   }
 
-  dimension: ss_ext_tax {
+  dimension: customer_sk {
+    group_label: "Keys/IDs"
+    label: "Customer SK"
     type: number
-    sql: ${TABLE}."SS_EXT_TAX" ;;
+    sql: ${TABLE}.SS_CUSTOMER_SK ;;
   }
 
-  dimension: ss_ext_wholesale_cost {
+  dimension: ext_discount_amt {
+    group_label: "Numerical Dimensions"
+    label: "Ext Discount Amount"
     type: number
-    sql: ${TABLE}."SS_EXT_WHOLESALE_COST" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_EXT_DISCOUNT_AMT ;;
   }
 
-  dimension: ss_hdemo_sk {
+  dimension: ext_list_price {
+    group_label: "Numerical Dimensions"
+    label: "Ext List Price"
     type: number
-    sql: ${TABLE}."SS_HDEMO_SK" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_EXT_LIST_PRICE ;;
   }
 
-  dimension: ss_item_sk {
+  dimension: ext_sales_price {
+    group_label: "Numerical Dimensions"
+    label: "Ext Sales Price"
     type: number
-    sql: ${TABLE}."SS_ITEM_SK" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_EXT_SALES_PRICE ;;
   }
 
-  dimension: ss_list_price {
+  dimension: ext_tax {
+    group_label: "Numerical Dimensions"
+    label: "Ext Tax"
     type: number
-    sql: ${TABLE}."SS_LIST_PRICE" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_EXT_TAX ;;
   }
 
-  dimension: ss_net_paid {
+  dimension: ext_wholesale_cost {
+    group_label: "Numerical Dimensions"
+    label: "Ext Wholesale Cost"
     type: number
-    value_format_name: id
-    sql: ${TABLE}."SS_NET_PAID" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_EXT_WHOLESALE_COST ;;
   }
 
-  dimension: ss_net_paid_inc_tax {
+  dimension: hdemo_sk {
+    group_label: "Keys/IDs"
+    label: "Household Demographics SK"
     type: number
-    sql: ${TABLE}."SS_NET_PAID_INC_TAX" ;;
+    sql: ${TABLE}.SS_HDEMO_SK ;;
   }
 
-  dimension: ss_net_profit {
+  dimension: list_price {
+    group_label: "Numerical Dimensions"
+    label: "List Price"
     type: number
-    sql: ${TABLE}."SS_NET_PROFIT" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_LIST_PRICE ;;
   }
 
-  dimension: ss_promo_sk {
+  dimension: net_paid {
+    group_label: "Numerical Dimensions"
+    label: "Net Paid"
     type: number
-    sql: ${TABLE}."SS_PROMO_SK" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_NET_PAID ;;
   }
 
-  dimension: ss_quantity {
+  dimension: net_paid_inc_tax {
+    group_label: "Numerical Dimensions"
+    label: "Net Paid Incl Tax"
     type: number
-    sql: ${TABLE}."SS_QUANTITY" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_NET_PAID_INC_TAX ;;
   }
 
-  dimension: ss_sales_price {
+  dimension: net_profit {
+    group_label: "Numerical Dimensions"
+    label: "Net Profit"
     type: number
-    sql: ${TABLE}."SS_SALES_PRICE" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_NET_PROFIT ;;
   }
 
-  dimension: ss_sold_date_sk {
+  dimension: promo_sk {
+    group_label: "Keys/IDs"
+    label: "Promo SK"
     type: number
-    sql: ${TABLE}."SS_SOLD_DATE_SK" ;;
+    sql: ${TABLE}.SS_PROMO_SK ;;
   }
 
-  dimension: ss_sold_time_sk {
+  dimension: quantity {
+    group_label: "Numerical Dimensions"
+    label: "Quantity"
     type: number
-    sql: ${TABLE}."SS_SOLD_TIME_SK" ;;
+    sql: ${TABLE}.SS_QUANTITY ;;
   }
 
-  dimension: ss_store_sk {
+  dimension: sales_price {
+    group_label: "Numerical Dimensions"
+    label: "Sales Price"
     type: number
-    sql: ${TABLE}."SS_STORE_SK" ;;
+    value_format_name: usd
+    sql: ${TABLE}.SS_SALES_PRICE ;;
   }
 
-  dimension: ss_ticket_number {
-    type: number
-    sql: ${TABLE}."SS_TICKET_NUMBER" ;;
+  dimension_group: sold {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.sold_date ;;
   }
 
-  dimension: ss_wholesale_cost {
+  dimension: store_sk {
+    group_label: "Keys/IDs"
+    label: "Store SK"
     type: number
-    sql: ${TABLE}."SS_WHOLESALE_COST" ;;
+    sql: ${TABLE}.SS_STORE_SK ;;
+  }
+
+  dimension: wholesale_cost {
+    group_label: "Numerical Dimensions"
+    label: "Wholesale Cost"
+    type: number
+    value_format_name: usd
+    sql: ${TABLE}.SS_WHOLESALE_COST ;;
   }
 
   measure: count {
+    label: "Number of Store Sales"
     type: count
-    drill_fields: []
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: []
   }
 }

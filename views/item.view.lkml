@@ -1,12 +1,30 @@
 view: item {
   label: "Item"
-  sql_table_name: TPCDS_SF10TCL.ITEM ;;
   drill_fields: [detail*]
+  derived_table: {
+    sql:  SELECT o.*
+          FROM tpcds_sf10tcl.item o
+          INNER JOIN (
+              SELECT
+                  MAX(i_item_sk) AS max_sk,
+                  i_item_id
+              FROM tpcds_sf10tcl.item
+              GROUP BY i_item_id ) oo
+          ON o.i_item_id = oo.i_item_id
+          AND o.i_item_sk = oo.max_sk  ;;
+  }
+
+  dimension: item_sk {
+    group_label: "Keys/IDs"
+    label: "Item SK"
+    type: number
+    primary_key: yes
+    sql: ${TABLE}.I_ITEM_SK ;;
+  }
 
   dimension: item_id {
     group_label: "Keys/IDs"
     label: "Item ID"
-    primary_key: yes
     type: string
     sql: ${TABLE}.I_ITEM_ID ;;
   }
@@ -82,13 +100,6 @@ view: item {
     sql: ${TABLE}.I_ITEM_DESC ;;
   }
 
-  dimension: item_sk {
-    group_label: "Keys/IDs"
-    label: "Item SK"
-    type: number
-    sql: ${TABLE}.I_ITEM_SK ;;
-  }
-
   dimension: manager_id {
     group_label: "Keys/IDs"
     label: "Manager ID"
@@ -113,36 +124,6 @@ view: item {
     label: "Product Name"
     type: string
     sql: ${TABLE}.I_PRODUCT_NAME ;;
-  }
-
-  dimension_group: record_end {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.I_REC_END_DATE ;;
-  }
-
-  dimension_group: record_start {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.I_REC_START_DATE ;;
   }
 
   dimension: size {

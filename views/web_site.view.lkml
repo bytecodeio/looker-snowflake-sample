@@ -1,4 +1,4 @@
-view: website {
+view: web_site {
   drill_fields: [detail*]
   derived_table: {
     sql: SELECT o.*,

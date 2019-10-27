@@ -2,10 +2,17 @@ view: reason {
   sql_table_name: TPCDS_SF10TCL.REASON ;;
   drill_fields: [detail*]
 
+  dimension: reason_sk {
+    group_label: "Keys/IDs"
+    label: "Reason SK"
+    type: number
+    primary_key: yes
+    sql: ${TABLE}.R_REASON_SK ;;
+  }
+
   dimension: reason_id {
     group_label: "Keys/IDs"
     label: "Reason ID"
-    primary_key: yes
     type: string
     sql: ${TABLE}.R_REASON_ID ;;
     hidden: yes
@@ -16,13 +23,6 @@ view: reason {
     type: string
     sql: ${TABLE}.R_REASON_DESC ;;
     hidden: yes
-  }
-
-  dimension: reason_sk {
-    group_label: "Keys/IDs"
-    label: "Reason SK"
-    type: number
-    sql: ${TABLE}.R_REASON_SK ;;
   }
 
   measure: count {

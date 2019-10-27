@@ -62,6 +62,7 @@ view: customer_demographics {
   }
 
   measure: count {
+    label: "Number of Demographic Records"
     type: count
     drill_fields: []
   }

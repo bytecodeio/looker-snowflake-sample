@@ -5,6 +5,7 @@ view: income_band {
     group_label: "Keys/IDs"
     label: "Income Band SK"
     type: number
+    primary_key: yes
     sql: ${TABLE}.IB_INCOME_BAND_SK ;;
   }
 
@@ -29,6 +30,7 @@ view: income_band {
   }
 
   measure: count {
+    label: "Number of Income Bands"
     type: count
     drill_fields: [detail*]
   }

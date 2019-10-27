@@ -15,10 +15,17 @@ view: customer {
           ON o.c_last_review_date = lr.d_date_sk ;;
   }
 
+  dimension: customer_sk {
+    group_label: "Keys/IDs"
+    label: "Customer SK"
+    type: number
+    primary_key: yes
+    sql: ${TABLE}.C_CUSTOMER_SK ;;
+  }
+
   dimension: customer_id {
     group_label: "Keys/IDs"
     label: "Customer ID"
-    primary_key: yes
     type: string
     sql: ${TABLE}.C_CUSTOMER_ID ;;
   }
@@ -82,13 +89,6 @@ view: customer {
     label: "Current Household Demographics SK"
     type: number
     sql: ${TABLE}.C_CURRENT_HDEMO_SK ;;
-  }
-
-  dimension: customer_sk {
-    group_label: "Keys/IDs"
-    label: "Customer SK"
-    type: number
-    sql: ${TABLE}.C_CUSTOMER_SK ;;
   }
 
   dimension: email_address {
