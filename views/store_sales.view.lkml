@@ -197,6 +197,36 @@ view: store_sales {
     drill_fields: [detail*]
   }
 
+  measure: total_profit {
+    type: sum
+    sql: ${net_profit} ;;
+  }
+
+  measure: total_price {
+    type: sum
+    sql: ${sales_price} ;;
+  }
+
+  measure: total_paid {
+    type: sum
+    sql: ${net_paid} ;;
+  }
+
+  measure: average_profit {
+    type: average
+    sql: ${net_profit} ;;
+  }
+
+  measure: average_price {
+    type: average
+    sql: ${sales_price} ;;
+  }
+
+  measure: average_paid {
+    type: average
+    sql:  ${net_paid} ;;
+  }
+
   set: detail {
     fields: []
   }
