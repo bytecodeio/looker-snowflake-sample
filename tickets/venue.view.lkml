@@ -67,6 +67,7 @@ view: venue {
   dimension: state {
     label: "Venue State"
     type: string
+    map_layer_name: us_states
     sql: ${TABLE}.STATE ;;
   }
 

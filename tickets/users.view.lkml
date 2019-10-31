@@ -145,6 +145,7 @@ view: users {
   dimension: state {
     label: "State"
     type: string
+    map_layer_name: us_states
     sql: ${TABLE}.STATE ;;
   }
 
