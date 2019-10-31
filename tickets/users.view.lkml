@@ -1,61 +1,19 @@
 view: users {
   view_label: "Users"
-  sql_table_name: HACKATHON.USERS ;;
-  drill_fields: [user_id]
+  sql_table_name: TEST_DB.TICKET.USERS ;;
+  drill_fields: [detail*]
 
   dimension: user_id {
     label: "User ID"
     primary_key: yes
     type: number
-    sql: ${TABLE}.USER_ID ;;
+    sql: ${TABLE}.USERID ;;
   }
 
-  dimension_group: _sdc_batched {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}._SDC_BATCHED_AT ;;
-    hidden: yes
-  }
-
-  dimension_group: _sdc_received {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}._SDC_RECEIVED_AT ;;
-    hidden: yes
-  }
-
-  dimension: _sdc_sequence {
-    type: number
-    sql: ${TABLE}._SDC_SEQUENCE ;;
-    hidden: yes
-  }
-
-  dimension: _sdc_table_version {
-    type: number
-    sql: ${TABLE}._SDC_TABLE_VERSION ;;
-    hidden: yes
-  }
-
-  dimension: broadway {
+  dimension: likes_broadway {
     label: "Likes Broadway"
     type: yesno
-    sql: ${TABLE}.BROADWAY ;;
+    sql: ${TABLE}.LIKEBROADWAY ;;
   }
 
   dimension: city {
@@ -64,16 +22,16 @@ view: users {
     sql: ${TABLE}.CITY ;;
   }
 
-  dimension: classical {
+  dimension: likes_classical {
     label: "Likes Classical"
     type: yesno
-    sql: ${TABLE}.CLASSICAL ;;
+    sql: ${TABLE}.LIKECLASSICAL ;;
   }
 
-  dimension: concerts {
+  dimension: likes_concerts {
     label: "Likes Concerts"
     type: yesno
-    sql: ${TABLE}.CONCERTS ;;
+    sql: ${TABLE}.LIKECONCERTS ;;
   }
 
   dimension: email {
@@ -85,7 +43,7 @@ view: users {
   dimension: first_name {
     label: "First Name"
     type: string
-    sql: ${TABLE}.FIRST_NAMS ;;
+    sql: ${TABLE}.FIRSTNAME ;;
   }
 
   dimension: full_name {
@@ -100,28 +58,28 @@ view: users {
     sql: ${last_name} || ', ' || ${first_name} ;;
   }
 
-  dimension: jazz {
+  dimension: likes_jazz {
     label: "Likes Jazz"
     type: yesno
-    sql: ${TABLE}.JAZZ ;;
+    sql: ${TABLE}.LIKEJAZZ ;;
   }
 
   dimension: last_name {
     label: "Last Name"
     type: string
-    sql: ${TABLE}.LAST_NAME ;;
+    sql: ${TABLE}.LASTNAME ;;
   }
 
-  dimension: musicals {
+  dimension: likes_musicals {
     label: "Likes Musicals"
     type: yesno
-    sql: ${TABLE}.MUSICALS ;;
+    sql: ${TABLE}.LIKEMUSICALS ;;
   }
 
-  dimension: opera {
+  dimension: likes_opera {
     label: "Likes Opera"
     type: yesno
-    sql: ${TABLE}.OPERA ;;
+    sql: ${TABLE}.LIKEOPERA ;;
   }
 
   dimension: phone {
@@ -130,16 +88,16 @@ view: users {
     sql: ${TABLE}.PHONE ;;
   }
 
-  dimension: rock {
+  dimension: likes_rock {
     label: "Likes Rock"
     type: yesno
-    sql: ${TABLE}.ROCK ;;
+    sql: ${TABLE}.LIKEROCK ;;
   }
 
-  dimension: sports {
+  dimension: likes_sports {
     label: "Likes Sports"
     type: yesno
-    sql: ${TABLE}.SPORTS ;;
+    sql: ${TABLE}.LIKESPORTS ;;
   }
 
   dimension: state {
@@ -149,10 +107,10 @@ view: users {
     sql: ${TABLE}.STATE ;;
   }
 
-  dimension: theater {
+  dimension: likes_theater {
     label: "Likes Theater"
     type: yesno
-    sql: ${TABLE}.THEATER ;;
+    sql: ${TABLE}.LIKETHEATER ;;
   }
 
   dimension: username {
@@ -160,15 +118,24 @@ view: users {
     sql: ${TABLE}.USERNAME ;;
   }
 
-  dimension: vegas {
+  dimension: likes_vegas {
     label: "Likes Vegas"
     type: yesno
-    sql: ${TABLE}.VEGAS ;;
+    sql: ${TABLE}.LIKEVEGAS ;;
   }
 
   measure: count {
     label: "Number of Users"
     type: count
-    drill_fields: [user_id, first_name, last_name, state]
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      user_id,
+      first_name,
+      last_name,
+      state
+    ]
   }
 }

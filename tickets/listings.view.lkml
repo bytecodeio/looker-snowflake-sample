@@ -1,62 +1,20 @@
 view: listings {
-  sql_table_name: HACKATHON.LISTINGS ;;
+  view_label: "Listings"
+  sql_table_name: TEST_DB.TICKET.LISTING ;;
 
   dimension: list_id {
     group_label: "Keys/IDs"
     label: "Listing ID"
     type: number
     primary_key: yes
-    sql: ${TABLE}.LIST_ID ;;
-  }
-
-  dimension_group: _sdc_batched {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}._SDC_BATCHED_AT ;;
-    hidden: yes
-
-  }
-
-  dimension_group: _sdc_received {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}._SDC_RECEIVED_AT ;;
-    hidden: yes
-  }
-
-  dimension: _sdc_sequence {
-    type: number
-    sql: ${TABLE}._SDC_SEQUENCE ;;
-    hidden: yes
-  }
-
-  dimension: _sdc_table_version {
-    type: number
-    sql: ${TABLE}._SDC_TABLE_VERSION ;;
-    hidden: yes
+    sql: ${TABLE}.LISTID ;;
   }
 
   dimension: date_id {
     group_label: "Keys/IDs"
     label: "Date ID"
     type: number
-    sql: ${TABLE}.DATE_ID ;;
+    sql: ${TABLE}.DATEID ;;
   }
 
   dimension: event_id {
@@ -64,7 +22,7 @@ view: listings {
     label: "Event ID"
     type: number
     # hidden: yes
-    sql: ${TABLE}.EVENT_ID ;;
+    sql: ${TABLE}.EVENTID ;;
   }
 
   dimension_group: list {
@@ -78,14 +36,14 @@ view: listings {
       quarter,
       year
     ]
-    sql: ${TABLE}.LIST_DATE ;;
+    sql: DATEADD(YEAR, 11, ${TABLE}.LISTTIME) ;;
   }
 
   dimension: num_tickets {
     group_label: "Numerical Dimensions"
     label: "Number of Tickets"
     type: number
-    sql: ${TABLE}.NUM_TICKETS ;;
+    sql: ${TABLE}.NUMTICKETS ;;
   }
 
   dimension: price_per_ticket {
@@ -93,14 +51,14 @@ view: listings {
     label: "Price per Ticket"
     type: number
     value_format_name: usd
-    sql: ${TABLE}.PRICE_PER_TICKET ;;
+    sql: ${TABLE}.PRICEPERTICKET ;;
   }
 
   dimension: seller_id {
     group_label: "Keys/IDs"
     label: "Seller User ID"
     type: number
-    sql: ${TABLE}.SELLER_ID ;;
+    sql: ${TABLE}.SELLERID ;;
   }
 
   dimension: price {
@@ -108,7 +66,7 @@ view: listings {
     label: "Total Price"
     type: number
     value_format_name: usd
-    sql: ${TABLE}.TOTAL_PRICE ;;
+    sql: ${TABLE}.TOTALPRICE ;;
   }
 
   measure: count {

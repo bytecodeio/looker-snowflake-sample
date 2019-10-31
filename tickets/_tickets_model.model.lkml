@@ -1,4 +1,4 @@
-connection: "snowflake_stitch"
+connection: "snowflake_sample"
 
 include: "/tickets/*.view"
 

@@ -1,5 +1,6 @@
 view: events {
-  sql_table_name: HACKATHON.EVENTS ;;
+  view_label: "Events"
+  sql_table_name: TEST_DB.TICKET.EVENT ;;
   drill_fields: [event_id]
 
   dimension: event_id {
@@ -7,63 +8,21 @@ view: events {
     label: "Event ID"
     primary_key: yes
     type: number
-    sql: ${TABLE}.EVENT_ID ;;
-  }
-
-  dimension_group: _sdc_batched {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}._SDC_BATCHED_AT ;;
-    hidden: yes
-  }
-
-  dimension_group: _sdc_received {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}._SDC_RECEIVED_AT ;;
-    hidden: yes
-  }
-
-  dimension: _sdc_sequence {
-    type: number
-    sql: ${TABLE}._SDC_SEQUENCE ;;
-    hidden: yes
-  }
-
-  dimension: _sdc_table_version {
-    type: number
-    sql: ${TABLE}._SDC_TABLE_VERSION ;;
-    hidden: yes
+    sql: ${TABLE}.EVENTID ;;
   }
 
   dimension: cat_id {
     group_label: "Keys/IDs"
     label: "Category ID"
     type: number
-    sql: ${TABLE}.CAT_ID ;;
+    sql: ${TABLE}.CATID ;;
   }
 
   dimension: date_id {
     group_label: "Keys/IDs"
     label: "Date ID"
     type: number
-    sql: ${TABLE}.DATE_ID ;;
+    sql: ${TABLE}.DATEID ;;
   }
 
   dimension_group: event {
@@ -77,13 +36,13 @@ view: events {
       quarter,
       year
     ]
-    sql: ${TABLE}.EVENT_DATE ;;
+    sql: DATEADD(YEAR, 11, ${TABLE}.STARTTIME) ;;
   }
 
   dimension: event_name {
     label: "Event Name"
     type: string
-    sql: ${TABLE}.EVENT_NAME ;;
+    sql: ${TABLE}.EVENTNAME ;;
   }
 
   dimension: venue_id {
@@ -91,7 +50,7 @@ view: events {
     label: "Venue ID"
     type: number
     # hidden: yes
-    sql: ${TABLE}.VENUE_ID ;;
+    sql: ${TABLE}.VENUEID ;;
   }
 
   measure: count {

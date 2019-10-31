@@ -1,94 +1,35 @@
 view: sales {
   view_label: "Sales"
-  sql_table_name: HACKATHON.SALES ;;
-  drill_fields: [sales_id]
+  sql_table_name: TEST_DB.TICKET.SALES ;;
+  drill_fields: [detail*]
 
   dimension: sales_id {
     group_label: "Keys/IDs"
     label: "Sales ID"
     primary_key: yes
     type: number
-    sql: ${TABLE}.SALES_ID ;;
-  }
-
-  dimension_group: _sdc_batched {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}._SDC_BATCHED_AT ;;
-    hidden: yes
-  }
-
-  dimension_group: _sdc_received {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}._SDC_RECEIVED_AT ;;
-    hidden: yes
-  }
-
-  dimension: _sdc_sequence {
-    type: number
-    sql: ${TABLE}._SDC_SEQUENCE ;;
-    hidden: yes
-  }
-
-  dimension: _sdc_table_version {
-    type: number
-    sql: ${TABLE}._SDC_TABLE_VERSION ;;
-    hidden: yes
+    sql: ${TABLE}.SALESID ;;
   }
 
   dimension: buyer_id {
     group_label: "Keys/IDs"
     label: "Buyer User ID"
     type: number
-    sql: ${TABLE}.BUYER_ID ;;
-  }
-
-  dimension: commission__fl {
-    group_label: "Numerical Dimensions"
-    label: "Commission Float"
-    type: number
-    sql: ${TABLE}.COMMISSION__FL ;;
-    hidden: yes
-  }
-
-  dimension: commission__it {
-    group_label: "Numerical Dimensions"
-    label: "Commission Integer"
-    type: number
-    sql: ${TABLE}.COMMISSION__IT ;;
-    hidden: yes
+    sql: ${TABLE}.BUYERID ;;
   }
 
   dimension: commission {
     group_label: "Numerical Dimensions"
     label: "Commission"
     type: number
-    value_format_name: usd
-    sql: COALESCE(${commission__fl}, ${commission__it}) ;;
+    sql: ${TABLE}.COMMISSION ;;
   }
 
   dimension: date_id {
     group_label: "Keys/IDs"
     label: "Date ID"
     type: number
-    sql: ${TABLE}.DATE_ID ;;
+    sql: ${TABLE}.DATEID ;;
   }
 
   dimension: event_id {
@@ -96,14 +37,14 @@ view: sales {
     label: "Event ID"
     type: number
     # hidden: yes
-    sql: ${TABLE}.EVENT_ID ;;
+    sql: ${TABLE}.EVENTID ;;
   }
 
   dimension: list_id {
     group_label: "Keys/IDs"
     label: "Listing ID"
     type: number
-    sql: ${TABLE}.LIST_ID ;;
+    sql: ${TABLE}.LISTID ;;
   }
 
   dimension: price_paid {
@@ -111,14 +52,14 @@ view: sales {
     label: "Price Paid"
     type: number
     value_format_name: usd
-    sql: ${TABLE}.PRICE_PAID ;;
+    sql: ${TABLE}.PRICEPAID ;;
   }
 
   dimension: qty_sold {
     group_label: "Numerical Dimensions"
     label: "Quantity Sold"
     type: number
-    sql: ${TABLE}.QTY_SOLD ;;
+    sql: ${TABLE}.QTYSOLD ;;
   }
 
   dimension_group: sales {
@@ -132,14 +73,14 @@ view: sales {
       quarter,
       year
     ]
-    sql: ${TABLE}.SALES_DATE ;;
+    sql: DATEADD(YEAR, 11, ${TABLE}.SALETIME) ;;
   }
 
   dimension: seller_id {
     group_label: "Keys/IDs"
     label: "Selling User ID"
     type: number
-    sql: ${TABLE}.SELLER_ID ;;
+    sql: ${TABLE}.SELLERID ;;
   }
 
   measure: count {

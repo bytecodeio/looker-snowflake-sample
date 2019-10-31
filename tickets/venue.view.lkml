@@ -1,85 +1,53 @@
 view: venue {
   view_label: "Venues"
-  sql_table_name: HACKATHON.VENUE ;;
-  drill_fields: [venue_id]
+  sql_table_name: TEST_DB.TICKET.VENUE ;;
+  drill_fields: [detail*]
 
   dimension: venue_id {
     label: "Venue ID"
     primary_key: yes
     type: number
-    sql: ${TABLE}.VENUE_ID ;;
-  }
-
-  dimension_group: _sdc_batched {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}._SDC_BATCHED_AT ;;
-    hidden: yes
-  }
-
-  dimension_group: _sdc_received {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}._SDC_RECEIVED_AT ;;
-    hidden: yes
-  }
-
-  dimension: _sdc_sequence {
-    type: number
-    sql: ${TABLE}._SDC_SEQUENCE ;;
-    hidden: yes
-  }
-
-  dimension: _sdc_table_version {
-    type: number
-    sql: ${TABLE}._SDC_TABLE_VERSION ;;
-    hidden: yes
+    sql: ${TABLE}.VENUEID ;;
   }
 
   dimension: city {
     label: "Venue City"
     type: string
-    sql: ${TABLE}.CITY ;;
+    sql: ${TABLE}.VENUECITY ;;
   }
 
   dimension: seats {
     label: "Venue Seats"
     type: number
-    sql: ${TABLE}.SEATS ;;
+    sql: ${TABLE}.VENUESEATS ;;
   }
 
   dimension: state {
     label: "Venue State"
     type: string
     map_layer_name: us_states
-    sql: ${TABLE}.STATE ;;
+    sql: ${TABLE}.VENUESTATE ;;
   }
 
   dimension: venue_name {
     label: "Venue Name"
     type: string
-    sql: ${TABLE}.VENUE_NAME ;;
+    sql: ${TABLE}.VENUENAME ;;
   }
 
   measure: count {
     label: "Number of Venues"
     type: count
-    drill_fields: [venue_id, venue_name, events.count]
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      venue_id,
+      venue_name,
+      city,
+      state,
+      events.count
+    ]
   }
 }
