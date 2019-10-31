@@ -100,15 +100,30 @@ view: events {
     drill_fields: [detail*]
   }
 
-  # ----- Sets of fields for drilling ------
+  measure: count_dates {
+    label: "Number of Dates w/ Events"
+    type: count_distinct
+    sql: ${date_id} ;;
+    drill_fields: [detail*]
+  }
+
+  measure: count_venues {
+    label: "Number of Venues w/ Events"
+    type: count_distinct
+    sql: ${venue_id} ;;
+    drill_fields: [detail*]
+  }
+
   set: detail {
     fields: [
       event_id,
       event_name,
-      venue.venue_id,
+      categories.cat_name,
+      categories.cat_group,
       venue.venue_name,
       listings.count,
       sales.count
     ]
   }
+
 }

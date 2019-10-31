@@ -148,11 +148,47 @@ view: sales {
     drill_fields: [detail*]
   }
 
+  measure: count_buyers {
+    label: "Number of Distinct Buyers"
+    type: count_distinct
+    sql: ${buyer_id} ;;
+    drill_fields: [detail*]
+  }
+
+  measure: count_dates {
+    label: "Number of Dates w/ Sales"
+    type: count_distinct
+    sql: ${date_id} ;;
+    drill_fields: [detail*]
+  }
+
+  measure: count_events {
+    label: "Number of Events Sold"
+    type: count_distinct
+    sql: ${event_id} ;;
+    drill_fields: [detail*]
+  }
+
+  measure: count_listings {
+    label: "Number of Listings Sold"
+    type: count_distinct
+    sql: ${list_id} ;;
+    drill_fields: [detail*]
+  }
+
+  measure: count_sellers {
+    label: "Number of Distinct Sellers"
+    type: count_distinct
+    sql: ${seller_id} ;;
+    drill_fields: [detail*]
+  }
+
   measure: avg_commission {
     label: "Average Commission"
     type: average
     value_format_name: usd
     sql: ${commission} ;;
+    drill_fields: [detail*]
   }
 
   measure: avg_price_paid {
@@ -160,6 +196,7 @@ view: sales {
     type: average
     value_format_name: usd
     sql: ${price_paid} ;;
+    drill_fields: [detail*]
   }
 
   measure: avg_tickets_sold{
@@ -167,6 +204,7 @@ view: sales {
     type: average
     value_format_name: decimal_1
     sql: ${qty_sold} ;;
+    drill_fields: [detail*]
   }
 
   measure: total_commission {
@@ -174,6 +212,7 @@ view: sales {
     type: sum
     value_format_name: usd
     sql: ${commission} ;;
+    drill_fields: [detail*]
   }
 
   measure: total_price_paid {
@@ -181,6 +220,7 @@ view: sales {
     type: sum
     value_format_name: usd
     sql: ${price_paid} ;;
+    drill_fields: [detail*]
   }
 
   measure: total_tickets_sold{
@@ -188,12 +228,22 @@ view: sales {
     type: sum
     value_format_name: decimal_0
     sql: ${qty_sold} ;;
+    drill_fields: [detail*]
   }
 
   set: detail {
     fields: [
       sales_id,
-      sales_date
+      sales_date,
+      qty_sold,
+      price_paid,
+      commission,
+      sellers.full_name,
+      buyers.full_name,
+      events.event_name,
+      categories.cat_name,
+      categories.cat_group,
+      venue.venue_name
     ]
   }
 }

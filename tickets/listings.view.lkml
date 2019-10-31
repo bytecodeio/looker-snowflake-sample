@@ -114,7 +114,28 @@ view: listings {
   measure: count {
     label: "Number of Listings"
     type: count
-    drill_fields: [events.event_name, events.event_id]
+    drill_fields: [detail*]
+  }
+
+  measure: count_dates {
+    label: "Number of Dates w/ Listings"
+    type: count_distinct
+    sql: ${date_id} ;;
+    drill_fields: [detail*]
+  }
+
+  measure: count_events {
+    label: "Number of Events Listed"
+    type: count_distinct
+    sql: ${event_id} ;;
+    drill_fields: [detail*]
+  }
+
+  measure: count_sellers {
+    label: "Number of Sellers w/ Listings"
+    type: count_distinct
+    sql: ${seller_id} ;;
+    drill_fields: [detail*]
   }
 
   measure: avg_tickets {
@@ -122,6 +143,7 @@ view: listings {
     type: average
     value_format_name: decimal_1
     sql: ${num_tickets} ;;
+    drill_fields: [detail*]
   }
 
   measure: avg_price_per_ticket {
@@ -129,6 +151,7 @@ view: listings {
     type: average
     value_format_name: usd
     sql: ${price_per_ticket} ;;
+    drill_fields: [detail*]
   }
 
   measure: avg_total_price {
@@ -136,6 +159,7 @@ view: listings {
     type: average
     value_format_name: usd
     sql: ${price} ;;
+    drill_fields: [detail*]
   }
 
   measure: sum_price {
@@ -143,13 +167,29 @@ view: listings {
     type: sum
     sql: ${price} ;;
     value_format_name: usd
+    drill_fields: [detail*]
   }
 
   measure: sum_tickets {
     label: "Total Number of Tickets"
     type: sum
     sql: ${num_tickets} ;;
+    drill_fields: [detail*]
   }
 
+  set: detail {
+    fields: [
+      list_id,
+      list_date,
+      num_tickets,
+      price_per_ticket,
+      price,
+      sellers.full_name,
+      events.event_name,
+      categories.cat_name,
+      categories.cat_group,
+      venue.venue_name
+    ]
+  }
 
 }

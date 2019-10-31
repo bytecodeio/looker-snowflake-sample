@@ -169,6 +169,6 @@ view: users {
   measure: count {
     label: "Number of Users"
     type: count
-    drill_fields: [user_id, username, last_name]
+    drill_fields: [user_id, first_name, last_name, state]
   }
 }
