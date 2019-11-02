@@ -76,6 +76,15 @@ view: sales {
     sql: DATEADD(YEAR, 11, ${TABLE}.SALETIME) ;;
   }
 
+  dimension: days_to_sell {
+    group_label: "Numerical Dimensions"
+    label: "Days to Sell"
+    type: duration_day
+    sql_start: ${listings.list_raw} ;;
+    sql_end: ${sales_raw} ;;
+    value_format_name: decimal_1
+  }
+
   dimension: seller_id {
     group_label: "Keys/IDs"
     label: "Selling User ID"
@@ -129,6 +138,14 @@ view: sales {
     type: average
     value_format_name: usd
     sql: ${commission} ;;
+    drill_fields: [detail*]
+  }
+
+  measure: avg_days_to_sell {
+    label: "Average Days to Sell"
+    type: average
+    value_format_name: decimal_1
+    sql: ${days_to_sell} ;;
     drill_fields: [detail*]
   }
 
