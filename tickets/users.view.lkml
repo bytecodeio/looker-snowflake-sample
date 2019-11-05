@@ -44,7 +44,7 @@ view: users {
 
   dimension: likes_broadway {
     label: "Likes Broadway"
-    type: yesno
+    type: string
     sql: ${TABLE}.LIKEBROADWAY ;;
   }
 
@@ -56,7 +56,7 @@ view: users {
 
   dimension: likes_classical {
     label: "Likes Classical"
-    type: yesno
+    type: string
     sql: ${TABLE}.LIKECLASSICAL ;;
   }
 
