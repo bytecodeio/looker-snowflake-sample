@@ -3,6 +3,38 @@ view: users {
   sql_table_name: TEST_DB.TICKET.USERS ;;
   drill_fields: [detail*]
 
+  parameter: likes_category {
+    full_suggestions: yes
+    allowed_value: {value: "User Likes Broadway"}
+    allowed_value: {value: "User Likes Classical"}
+    allowed_value: {value: "User Likes Concerts"}
+    allowed_value: {value: "User Likes Musicals"}
+    allowed_value: {value: "User Likes Jazz"}
+    allowed_value: {value: "User Likes Opera"}
+    allowed_value: {value: "User Likes Rock"}
+    allowed_value: {value: "User Likes Sports"}
+    allowed_value: {value: "User Likes Theater"}
+    allowed_value: {value: "User Likes Vegas"}
+  }
+
+  dimension: user_likes_category {
+    label_from_parameter: likes_category
+    sql:
+            CASE
+             WHEN {% parameter likes_category %} = 'User Likes Broadway' THEN ${likes_broadway}
+             WHEN {% parameter likes_category %} = 'User Likes Classical' THEN ${likes_classical}
+             WHEN {% parameter likes_category %} = 'User Likes Concerts' THEN ${likes_concerts}
+             WHEN {% parameter likes_category %} = 'User Likes Musicals' THEN ${likes_musicals}
+             WHEN {% parameter likes_category %} = 'User Likes Jazz' THEN ${likes_jazz}
+             WHEN {% parameter likes_category %} = 'User Likes Opera' THEN ${likes_opera}
+             WHEN {% parameter likes_category %} = 'User Likes Rock' THEN ${likes_rock}
+             WHEN {% parameter likes_category %} = 'User Likes Sports' THEN ${likes_sports}
+             WHEN {% parameter likes_category %} = 'User Likes Theater' THEN ${likes_theater}
+             WHEN {% parameter likes_category %} = 'User Likes Vegas' THEN ${likes_vegas}
+             ELSE NULL
+            END ;;
+  }
+
   dimension: user_id {
     label: "User ID"
     primary_key: yes
@@ -110,7 +142,7 @@ view: users {
   dimension: likes_theater {
     label: "Likes Theater"
     type: yesno
-    sql: ${TABLE}.LIKETHEATER ;;
+    sql: ${TABLE}.LIKETHEATRE;;
   }
 
   dimension: username {
