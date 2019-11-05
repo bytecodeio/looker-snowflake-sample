@@ -135,6 +135,13 @@ view: listings {
     drill_fields: [detail*]
   }
 
+  measure: tickets_per_event {
+    label: "Number of Tickets per Event"
+    type: number
+    sql: 1.0*${sum_tickets}/nullif(${count_events},0) ;;
+    value_format_name: decimal_1
+  }
+
   set: detail {
     fields: [
       list_id,
