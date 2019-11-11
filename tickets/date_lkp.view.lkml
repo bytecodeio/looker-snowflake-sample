@@ -5,6 +5,7 @@ view: date_lkp {
   dimension: date_id {
     label: "Date ID"
     type: number
+    primary_key: yes
     sql: ${TABLE}.DATEID ;;
   }
 
