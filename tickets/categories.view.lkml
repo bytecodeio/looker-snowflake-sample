@@ -25,6 +25,40 @@ view: categories {
     label: "Category Name"
     type: string
     sql: ${TABLE}.CATNAME ;;
+
+  }
+
+  dimension: cat_color {
+    label: "Category Color Box"
+    type: string
+    sql: ${cat_name} ;;
+    html:
+      {% if value == 'MLB' %}
+        <p><img src="https://www.iconsdb.com/icons/preview/red/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% elsif value == 'MLS' %}
+        <p><img src="https://www.iconsdb.com/icons/preview/orange/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% elsif value == 'NBA' %}
+        <p><img src="https://www.iconsdb.com/icons/preview/yellow/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% elsif value == 'NFL' %}
+        <p><img src="https://www.iconsdb.com/icons/preview/green/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% elsif value == 'NHL' %}
+        <p><img src="https://www.iconsdb.com/icons/preview/gray/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% elsif value == 'Classical' %}
+        <p><img src="https://www.iconsdb.com/icons/preview/purple/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% elsif value == 'Jazz' %}
+        <p><img src="https://www.iconsdb.com/icons/preview/persian-red/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% elsif value == 'Musicals' %}
+        <p><img src="https://www.iconsdb.com/icons/preview/lime/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% elsif value == 'Opera' %}
+         <p><img src="https://www.iconsdb.com/icons/preview/olive/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% elsif value == 'Plays' %}
+        <p><img src="https://www.iconsdb.com/icons/preview/bisque/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% elsif value == 'Pop' %}
+         <p><img src="https://www.iconsdb.com/icons/preview/navy-blue/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% else %}
+        <p><img src="https://www.iconsdb.com/icons/preview/white/square-xxl.png" height=20 width=20>{{ rendered_value }}</p>
+      {% endif %}
+    ;;
   }
 
   measure: count {

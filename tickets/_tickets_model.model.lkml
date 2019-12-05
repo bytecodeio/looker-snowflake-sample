@@ -2,6 +2,7 @@ connection: "snowflake_sample"
 
 include: "/tickets/*.view"
 
+explore: categories {}
 
 explore: events {
   view_name: events
