@@ -1,2 +1,2 @@
 # looker-snowflake-sample
-Looker LookML Git Repository for Snowflake Sample Data
+Looker LookML Git Repository for Snowflake Sample Data: **Tickets Database**
