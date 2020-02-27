@@ -66,4 +66,20 @@ view: categories {
     type: count
     drill_fields: [cat_id, cat_name, cat_group]
   }
+
+  measure: count_sports {
+    label: "Number of Sport Categories"
+    type: count
+    filters: {
+      field: cat_group
+      value: "Sports"
+    }
+    drill_fields: [cat_id, cat_name, cat_group]
+  }
+
+  measure: percent_sports {
+    type: number
+    value_format_name: percent_2
+    sql: ${count_sports} / ${count} ;;
+  }
 }

@@ -2,7 +2,11 @@ connection: "snowflake_sample"
 
 include: "/tickets/*.view"
 
-explore: categories {}
+explore: categories {
+  view_name: categories
+  group_label: "Event Tickets"
+  label: "Categories"
+}
 
 explore: events {
   view_name: events
