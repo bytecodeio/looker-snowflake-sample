@@ -30,6 +30,12 @@ explore: events {
     relationship: many_to_one
     sql_on:  ${events.date_id} = ${date_lkp.date_id} ;;
   }
+
+  access_filter: {
+    field: venue.venue_id
+    user_attribute: venue_id_ua
+  }
+
 }
 
 explore: listings {
