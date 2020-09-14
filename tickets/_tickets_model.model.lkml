@@ -12,6 +12,11 @@ explore: events {
   view_name: events
   group_label: "Event Tickets"
   label: "Events"
+
+  cancel_grouping_fields: [
+    events.venue_id
+  ]
+
   join: venue {
     view_label: "Venues"
     type: left_outer
