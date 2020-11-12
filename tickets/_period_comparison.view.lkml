@@ -116,6 +116,7 @@ view: _period_comparison {
     label: "Current Period"
     group_label: "Period Comparison Date"
     type: time
+    convert_tz: no
     ## SNOWFLAKE SQL
     sql: dateadd(day, ${day_in_period} - 1, ${filter_start_date_raw}) ;;
     timeframes: [
