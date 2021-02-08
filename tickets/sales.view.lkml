@@ -1,6 +1,9 @@
+include: "_period_comparison.view.lkml"
 view: sales {
   view_label: "Sales"
   sql_table_name: TEST_DB.TICKET.SALES ;;
+  extends: [_period_comparison]
+
   drill_fields: [detail*]
 
   dimension: sales_id {
@@ -73,7 +76,19 @@ view: sales {
       quarter,
       year
     ]
-    sql: DATEADD(YEAR, 11, ${TABLE}.SALETIME) ;;
+    sql: DATEADD(YEAR, 12, ${TABLE}.SALETIME) ;;
+  }
+
+  #### Used with period comparison view
+  dimension_group: event {
+    hidden: yes
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date
+    ]
+    sql: DATEADD(YEAR, 12, ${TABLE}.SALETIME) ;;
   }
 
   dimension: days_to_sell {
@@ -183,10 +198,31 @@ view: sales {
 
   measure: total_tickets_sold{
     label: "Total Tickets Sold"
+    group_label: "Total Tickets Sold"
     type: sum
     value_format_name: decimal_0
     sql: ${qty_sold} ;;
     drill_fields: [detail*]
+  }
+
+  measure: total_tickets_sold_current_period {
+    label: "Total Tickets Sold Current Period"
+    group_label: "Total Tickets Sold"
+    type: sum
+    value_format_name: decimal_0
+    sql: ${qty_sold} ;;
+    drill_fields: [detail*]
+    filters: [is_current_period: "Yes"]
+  }
+
+  measure: total_tickets_sold_comparison_period {
+    label: "Total Tickets Sold Comparison Period"
+    group_label: "Total Tickets Sold"
+    type: sum
+    value_format_name: decimal_0
+    sql: ${qty_sold} ;;
+    drill_fields: [detail*]
+    filters: [is_comparison_period: "Yes"]
   }
 
   set: detail {
