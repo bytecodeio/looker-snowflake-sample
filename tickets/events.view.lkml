@@ -73,6 +73,11 @@ view: events {
     drill_fields: [detail*]
   }
 
+  measure: temporary {
+    type: sum
+    sql: 10000 ;;
+  }
+
   set: detail {
     fields: [
       event_id,
