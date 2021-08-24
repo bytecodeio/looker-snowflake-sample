@@ -70,6 +70,7 @@ view: sales {
     timeframes: [
       raw,
       time,
+      hour_of_day,
       date,
       week,
       month,
