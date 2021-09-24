@@ -9,6 +9,7 @@ view: _period_comparison {
     label: "Current Period Date Filter"
     description: "Use this date filter in combination with the period dimension to compare this period to previous periods."
     type: date
+    sql: ${is_within_current_and_comparison_period} ;;
   }
 
   parameter: comparison_period {
